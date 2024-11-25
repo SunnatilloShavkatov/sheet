@@ -4,13 +4,12 @@ import 'package:sheet/sheet.dart';
 
 class FloatingModal extends StatelessWidget {
   const FloatingModal({super.key, required this.child, this.backgroundColor});
+
   final Widget child;
   final Color? backgroundColor;
 
   @override
   Widget build(BuildContext context) {
-    // DisplayFeatureSubScreen allows to display the modal in just
-    // one sub-screen of a foldable device.
     return DisplayFeatureSubScreen(
       anchorPoint: Offset.infinite,
       child: SafeArea(

@@ -4,6 +4,7 @@ import 'package:sheet/sheet.dart';
 
 class DialogSheet extends StatelessWidget {
   const DialogSheet({super.key, required this.child, this.backgroundColor});
+
   final Widget child;
   final Color? backgroundColor;
 
@@ -12,7 +13,8 @@ class DialogSheet extends StatelessWidget {
     final MediaQueryData mediaQuery = MediaQuery.of(context);
     return MediaQuery(
       data: mediaQuery.copyWith(
-          padding: mediaQuery.padding + const EdgeInsets.only(top: 40)),
+        padding: mediaQuery.padding + const EdgeInsets.only(top: 40),
+      ),
       child: SafeArea(
         bottom: false,
         left: false,
@@ -21,9 +23,7 @@ class DialogSheet extends StatelessWidget {
           child: Align(
             alignment: Alignment.center,
             child: ConstrainedBox(
-              constraints: const BoxConstraints(
-                maxWidth: 800,
-              ),
+              constraints: const BoxConstraints(maxWidth: 800),
               child: Material(
                 color: backgroundColor,
                 clipBehavior: Clip.antiAlias,
@@ -39,12 +39,9 @@ class DialogSheet extends StatelessWidget {
 }
 
 class DialogSheetRoute<T> extends SheetRoute<T> {
-  DialogSheetRoute({
-    required WidgetBuilder builder,
-  }) : super(
-          builder: (BuildContext context) => DialogSheet(
-            child: Builder(builder: builder),
-          ),
+  DialogSheetRoute({required WidgetBuilder builder})
+      : super(
           fit: SheetFit.loose,
+          builder: (BuildContext context) => DialogSheet(child: Builder(builder: builder)),
         );
 }

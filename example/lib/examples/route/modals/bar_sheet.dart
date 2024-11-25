@@ -5,13 +5,15 @@ import 'package:sheet/route.dart';
 const Radius _defaultBarTopRadius = Radius.circular(15);
 
 class BarBottomSheet extends StatelessWidget {
-  const BarBottomSheet(
-      {super.key,
-      required this.child,
-      this.control,
-      this.clipBehavior,
-      this.shape,
-      this.elevation});
+  const BarBottomSheet({
+    super.key,
+    required this.child,
+    this.control,
+    this.clipBehavior,
+    this.shape,
+    this.elevation,
+  });
+
   final Widget child;
   final Widget? control;
   final Clip? clipBehavior;
@@ -23,43 +25,39 @@ class BarBottomSheet extends StatelessWidget {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
       child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            const SizedBox(height: 12),
-            SafeArea(
-              bottom: false,
-              child: control ??
-                  Container(
-                    height: 6,
-                    width: 40,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(6)),
-                  ),
-            ),
-            const SizedBox(height: 8),
-            Flexible(
-              flex: 1,
-              fit: FlexFit.loose,
-              child: Material(
-                shape: shape ??
-                    const RoundedRectangleBorder(
-                      side: BorderSide(),
-                      borderRadius: BorderRadius.only(
-                          topLeft: _defaultBarTopRadius,
-                          topRight: _defaultBarTopRadius),
-                    ),
-                clipBehavior: clipBehavior ?? Clip.hardEdge,
-                elevation: elevation ?? 2,
-                child: SizedBox(
-                  width: double.infinity,
-                  child: MediaQuery.removePadding(
-                      context: context, removeTop: true, child: child),
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          const SizedBox(height: 12),
+          SafeArea(
+            bottom: false,
+            child: control ??
+                Container(
+                  height: 6,
+                  width: 40,
+                  decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(6)),
                 ),
+          ),
+          const SizedBox(height: 8),
+          Flexible(
+            flex: 1,
+            fit: FlexFit.loose,
+            child: Material(
+              shape: shape ??
+                  const RoundedRectangleBorder(
+                    side: BorderSide(),
+                    borderRadius: BorderRadius.only(topLeft: _defaultBarTopRadius, topRight: _defaultBarTopRadius),
+                  ),
+              clipBehavior: clipBehavior ?? Clip.hardEdge,
+              elevation: elevation ?? 2,
+              child: SizedBox(
+                width: double.infinity,
+                child: MediaQuery.removePadding(context: context, removeTop: true, child: child),
               ),
             ),
-          ]),
+          ),
+        ],
+      ),
     );
   }
 }
