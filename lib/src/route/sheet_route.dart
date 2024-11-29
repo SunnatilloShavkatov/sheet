@@ -12,7 +12,7 @@ import "package:sheet/sheet.dart";
 
 // TODO(jaime): Arbitrary values, keep them or make SheetRoute abstract
 const double _kWillPopThreshold = 0.8;
-const Duration _kSheetTransitionDuration = Duration(milliseconds: 400);
+const Duration _kSheetTransitionDuration = Duration(milliseconds: 300);
 const Color _kBarrierColor = Color(0x59000000);
 
 /// A modal route that overlays a widget over the current route and animates
