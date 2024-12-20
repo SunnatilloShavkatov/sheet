@@ -268,8 +268,8 @@ class Sheet extends StatelessWidget {
                 offset: offset,
                 minExtent: minResizableExtent ?? 0,
                 child: Builder(
-                  key: const Key("_sheet_child"),
-                  builder: (BuildContext context) => decorationBuild(context, child),
+                  key: const Key("sheet_child"),
+                  builder: (context) => decorationBuild(context, child),
                 ),
               ),
             ),
