@@ -38,8 +38,7 @@ class StatusBarGestureDetector extends StatefulWidget {
   final StatusBarGestureDetectorCallback onTap;
 
   @override
-  State<StatusBarGestureDetector> createState() =>
-      _StatusBarGestureDetectorState();
+  State<StatusBarGestureDetector> createState() => _StatusBarGestureDetectorState();
 }
 
 class _StatusBarGestureDetectorState extends State<StatusBarGestureDetector> {
@@ -57,18 +56,18 @@ class _StatusBarGestureDetectorState extends State<StatusBarGestureDetector> {
     return OverlayPortal.targetsRootOverlay(
       controller: controller,
       overlayChildBuilder: (context) => Align(
-          alignment: Alignment.topCenter,
-          child: SizedBox(
-            height: view.padding.top / view.devicePixelRatio,
-            width: double.infinity,
-            child: GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: () => widget.onTap(context),
-              // iOS accessibility automatically adds scroll-to-top to the clock in the status bar
-              excludeFromSemantics: true,
-            ),
+        alignment: Alignment.topCenter,
+        child: SizedBox(
+          height: view.padding.top / view.devicePixelRatio,
+          width: double.infinity,
+          child: GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () => widget.onTap(context),
+            // iOS accessibility automatically adds scroll-to-top to the clock in the status bar
+            excludeFromSemantics: true,
           ),
         ),
+      ),
       child: widget.child,
     );
   }

@@ -25,9 +25,8 @@ class DefaultSheetController extends StatefulWidget {
   /// A callback called when the controller is created
   final SheetControllerCallback? onCreated;
 
-  static SheetController? of(BuildContext context) => context
-        .dependOnInheritedWidgetOfExactType<_InheritedSheetController>()
-        ?.controller;
+  static SheetController? of(BuildContext context) =>
+      context.dependOnInheritedWidgetOfExactType<_InheritedSheetController>()?.controller;
 
   @override
   State<DefaultSheetController> createState() => _DefaultSheetControllerState();
@@ -44,9 +43,9 @@ class _DefaultSheetControllerState extends State<DefaultSheetController> {
 
   @override
   Widget build(BuildContext context) => _InheritedSheetController(
-      controller: controller,
-      child: widget.child,
-    );
+        controller: controller,
+        child: widget.child,
+      );
 
   @override
   void dispose() {

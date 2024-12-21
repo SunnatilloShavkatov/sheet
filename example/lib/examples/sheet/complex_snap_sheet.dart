@@ -11,8 +11,7 @@ class AdvancedSnapSheetPage extends StatefulWidget {
   State<AdvancedSnapSheetPage> createState() => _AdvancedSnapSheetPageState();
 }
 
-class _AdvancedSnapSheetPageState extends State<AdvancedSnapSheetPage>
-    with TickerProviderStateMixin {
+class _AdvancedSnapSheetPageState extends State<AdvancedSnapSheetPage> with TickerProviderStateMixin {
   late SheetController controller;
 
   @override
@@ -32,17 +31,13 @@ class _AdvancedSnapSheetPageState extends State<AdvancedSnapSheetPage>
         unselectedItemColor: Colors.grey[400],
         selectedItemColor: Theme.of(context).primaryColor,
         onTap: (int index) {
-          controller.relativeAnimateTo(0.3,
-              duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+          controller.relativeAnimateTo(0.3, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
         },
         items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-              label: 'Explore', icon: Icon(Icons.place_outlined)),
+          BottomNavigationBarItem(label: 'Explore', icon: Icon(Icons.place_outlined)),
           BottomNavigationBarItem(label: 'Go', icon: Icon(Icons.bus_alert)),
-          BottomNavigationBarItem(
-              label: 'Saved', icon: Icon(Icons.bookmark_border)),
-          BottomNavigationBarItem(
-              label: 'Updates', icon: Icon(Icons.add_alert_outlined)),
+          BottomNavigationBarItem(label: 'Saved', icon: Icon(Icons.bookmark_border)),
+          BottomNavigationBarItem(label: 'Updates', icon: Icon(Icons.add_alert_outlined)),
         ],
       ),
       body: Stack(
@@ -72,15 +67,19 @@ class _AdvancedSnapSheetPageState extends State<AdvancedSnapSheetPage>
 
 class MapAppBar extends StatefulWidget implements PreferredSizeWidget {
   const MapAppBar({super.key, required this.controller});
+
   final SheetController controller;
+
   @override
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
+
   @override
   State<MapAppBar> createState() => _MapAppBarState();
 }
 
 class _MapAppBarState extends State<MapAppBar> {
   bool scrolled = false;
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((Duration timeStamp) {
@@ -111,15 +110,15 @@ class _MapAppBarState extends State<MapAppBar> {
                 tween: Tween<double>(begin: 0.0, end: sheetBar ? 1 : 0),
                 duration: Duration(milliseconds: 200),
                 builder: (BuildContext context, double t, Widget? child) {
-                  final double elevation =
-                      Tween<double>(begin: 4.0, end: 0.0).transform(t);
+                  final double elevation = Tween<double>(begin: 4.0, end: 0.0).transform(t);
                   final Color? color = ColorTween(
-                          begin: Colors.white.withOpacity(0), end: Colors.white)
-                      .transform(t);
+                    begin: Colors.white.withValues(alpha: 0),
+                    end: Colors.white,
+                  ).transform(t);
                   final Color? borderColor = ColorTween(
-                          begin: Colors.grey[200]!.withOpacity(0),
-                          end: Colors.grey[200])
-                      .transform(t);
+                    begin: Colors.grey[200]!.withValues(alpha: 0),
+                    end: Colors.grey[200],
+                  ).transform(t);
                   return AppBar(
                     elevation: 0,
                     systemOverlayStyle: SystemUiOverlayStyle.dark,
@@ -134,8 +133,7 @@ class _MapAppBarState extends State<MapAppBar> {
                           hintText: 'Search here',
                           fillColor: Colors.white,
                           filled: true,
-                          contentPadding:
-                              EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(24),
                             borderSide: BorderSide(color: borderColor!),
@@ -160,12 +158,16 @@ class _MapAppBarState extends State<MapAppBar> {
             title: Text('Latest near you'),
             leading: IconButton(
               onPressed: () async {
-                await widget.controller.position.scrollController.animateTo(0,
-                    duration: Duration(milliseconds: 200),
-                    curve: Curves.easeIn);
-                await widget.controller.relativeAnimateTo(0.3,
-                    duration: Duration(milliseconds: 200),
-                    curve: Curves.easeOut);
+                await widget.controller.position.scrollController.animateTo(
+                  0,
+                  duration: Duration(milliseconds: 200),
+                  curve: Curves.easeIn,
+                );
+                await widget.controller.relativeAnimateTo(
+                  0.3,
+                  duration: Duration(milliseconds: 200),
+                  curve: Curves.easeOut,
+                );
               },
               icon: Icon(Icons.arrow_downward),
             ),
@@ -175,12 +177,13 @@ class _MapAppBarState extends State<MapAppBar> {
 
 class FloatingButtons extends StatelessWidget {
   const FloatingButtons({super.key, required this.controller});
+
   final SheetController controller;
+
   @override
   Widget build(BuildContext context) {
     final MediaQueryData mediaQuery = MediaQuery.of(context);
-    final double height =
-        mediaQuery.size.height - mediaQuery.padding.top - kToolbarHeight;
+    final double height = mediaQuery.size.height - mediaQuery.padding.top - kToolbarHeight;
     return AnimatedBuilder(
         animation: controller.animation,
         builder: (BuildContext context, Widget? child) {
@@ -226,7 +229,9 @@ class FloatingButtons extends StatelessWidget {
 
 class MapSheet extends StatelessWidget {
   const MapSheet({super.key, required this.controller});
+
   final SheetController controller;
+
   @override
   Widget build(BuildContext context) {
     return Sheet(
@@ -246,17 +251,16 @@ class MapSheet extends StatelessWidget {
               tween: Tween<double>(begin: 0.0, end: sheetBar ? 1 : 0),
               duration: Duration(milliseconds: 200),
               builder: (BuildContext context, double t, Widget? child) {
-                final double radius =
-                    Tween<double>(begin: 16.0, end: 0.0).transform(t);
+                final double radius = Tween<double>(begin: 16.0, end: 0.0).transform(t);
 
                 final Color? shadow = ColorTween(
-                        begin: Colors.black26,
-                        end: Colors.black26.withOpacity(0))
-                    .transform(t);
+                  begin: Colors.black26,
+                  end: Colors.black26..withValues(alpha: 0),
+                ).transform(t);
                 final Color? barColor = ColorTween(
-                        begin: Colors.grey[200],
-                        end: Colors.grey[200]?.withOpacity(0))
-                    .transform(t);
+                  begin: Colors.grey[200],
+                  end: Colors.grey[200]?..withValues(alpha: 0),
+                ).transform(t);
                 return MediaQuery.removePadding(
                   context: context,
                   removeTop: true,
@@ -290,8 +294,7 @@ class MapSheet extends StatelessWidget {
                                 return Container(
                                   child: Text(
                                     'Latest near you',
-                                    style:
-                                        Theme.of(context).textTheme.titleLarge,
+                                    style: Theme.of(context).textTheme.titleLarge,
                                   ),
                                   padding: EdgeInsets.all(20),
                                   alignment: Alignment.centerLeft,

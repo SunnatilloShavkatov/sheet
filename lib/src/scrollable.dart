@@ -162,7 +162,6 @@ class SheetScrollable extends StatefulWidget {
   ///  * [SemanticsConfiguration.scrollChildCount], the corresponding semantics property.
   final int? semanticChildCount;
 
-  // TODO(jslavitz): Set the DragStartBehavior default to be start across all widgets.
   /// {@template flutter.widgets.scrollable.dragStartBehavior}
   /// Determines the way that drag start behavior is handled.
   ///

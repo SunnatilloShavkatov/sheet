@@ -13,7 +13,8 @@ import "package:sheet/src/sheet.dart";
 /// sheets
 @internal
 class MinInteractionZone extends SingleChildRenderObjectWidget {
-  const MinInteractionZone({super.key, 
+  const MinInteractionZone({
+    super.key,
     required this.direction,
     required this.extent,
     super.child,
@@ -24,11 +25,14 @@ class MinInteractionZone extends SingleChildRenderObjectWidget {
   final double extent;
 
   @override
-  MinInteractionPaddingRenderBox createRenderObject(BuildContext context) => MinInteractionPaddingRenderBox(direction, extent);
+  MinInteractionPaddingRenderBox createRenderObject(BuildContext context) =>
+      MinInteractionPaddingRenderBox(direction, extent);
 
   @override
   void updateRenderObject(
-      BuildContext context, MinInteractionPaddingRenderBox renderObject,) {
+    BuildContext context,
+    MinInteractionPaddingRenderBox renderObject,
+  ) {
     renderObject
       ..direction = direction
       ..extent = extent;
@@ -41,7 +45,9 @@ class MinInteractionPaddingRenderBox extends RenderProxyBox {
         _extent = extent;
 
   AxisDirection _direction;
+
   AxisDirection get direction => _direction;
+
   set direction(AxisDirection value) {
     if (value == _direction) {
       return;
@@ -50,7 +56,9 @@ class MinInteractionPaddingRenderBox extends RenderProxyBox {
   }
 
   double _extent;
+
   double get extent => _extent;
+
   set extent(double value) {
     if (value == _extent) {
       return;
@@ -63,15 +71,13 @@ class MinInteractionPaddingRenderBox extends RenderProxyBox {
     Rect minInteractionZone;
     switch (direction) {
       case AxisDirection.up:
-        minInteractionZone =
-            Rect.fromLTRB(0, size.height - extent, size.width, size.height);
+        minInteractionZone = Rect.fromLTRB(0, size.height - extent, size.width, size.height);
       case AxisDirection.down:
         minInteractionZone = Rect.fromLTRB(0, 0, size.width, extent);
       case AxisDirection.right:
         minInteractionZone = Rect.fromLTRB(0, 0, extent, size.height);
       case AxisDirection.left:
-        minInteractionZone =
-            Rect.fromLTRB(size.width - extent, 0, size.width, size.height);
+        minInteractionZone = Rect.fromLTRB(size.width - extent, 0, size.width, size.height);
     }
     return minInteractionZone.contains(position);
   }

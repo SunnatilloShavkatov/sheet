@@ -5,12 +5,6 @@ import "package:flutter/gestures.dart";
 import "package:flutter/material.dart";
 import "package:sheet/sheet.dart";
 
-/// {@template flutter.widgets.sheet.physics}
-/// Determines the physics of a [Sheet] widget.
-///
-/// For example, determines how the [Sheet] will behave when the user
-/// reaches the maximum drag extent or when the user stops dragging.
-/// {@endtemplate}
 mixin SheetPhysics on ScrollPhysics {
   bool shouldReload(covariant ScrollPhysics old) => false;
 }
@@ -250,20 +244,10 @@ class NoMomentumSheetPhysics extends ScrollPhysics with SheetPhysics {
       return value - position.maxScrollExtent;
     }
     return 0;
-
-    // if (position.viewportDimension <= position.pixels &&
-    //     position.pixels < value) // hit top edge
-    //   return value - position.pixels;
-    // if (position.pixels < 0 && position.pixels > value) // hit bottom edge
-    //   return value - position.pixels;
-    // return 0.0;
   }
 
   @override
-  Simulation? createBallisticSimulation(
-    ScrollMetrics position,
-    double velocity,
-  ) {
+  Simulation? createBallisticSimulation(ScrollMetrics position, double velocity) {
     if (position.outOfRange) {
       double? end;
       if (position.pixels > position.maxScrollExtent) {
@@ -286,9 +270,7 @@ class NoMomentumSheetPhysics extends ScrollPhysics with SheetPhysics {
 
 class ClampingSheetPhysics extends ScrollPhysics with SheetPhysics {
   /// Creates sheet physics that has no momentum after the user stops dragging.
-  const ClampingSheetPhysics({
-    super.parent,
-  });
+  const ClampingSheetPhysics({super.parent});
 
   @override
   ClampingSheetPhysics applyTo(ScrollPhysics? ancestor) => ClampingSheetPhysics(parent: buildParent(ancestor));
@@ -336,10 +318,7 @@ class ClampingSheetPhysics extends ScrollPhysics with SheetPhysics {
   }
 
   @override
-  Simulation? createBallisticSimulation(
-    ScrollMetrics position,
-    double velocity,
-  ) {
+  Simulation? createBallisticSimulation(ScrollMetrics position, double velocity) {
     final Tolerance tolerance = toleranceFor(position);
     if (position.outOfRange) {
       double? end;
@@ -367,11 +346,7 @@ class ClampingSheetPhysics extends ScrollPhysics with SheetPhysics {
     if (velocity < 0.0 && position.pixels <= position.minScrollExtent) {
       return null;
     }
-    return ClampingScrollSimulation(
-      position: position.pixels,
-      velocity: velocity,
-      tolerance: tolerance,
-    );
+    return ClampingScrollSimulation(position: position.pixels, velocity: velocity, tolerance: tolerance);
   }
 }
 
@@ -429,11 +404,7 @@ class SnapSheetPhysics extends ScrollPhysics with SheetPhysics {
     return _getTargetPixels(newPosition, tolerance, velocity);
   }
 
-  double _getTargetPixels(
-    ScrollMetrics position,
-    Tolerance tolerance,
-    double velocity,
-  ) {
+  double _getTargetPixels(ScrollMetrics position, Tolerance tolerance, double velocity) {
     int page = _getPage(position) ?? 0;
 
     final double targetPixels = getPixelsFromPage(position, page.clamp(0, stops.length - 1));
@@ -448,15 +419,7 @@ class SnapSheetPhysics extends ScrollPhysics with SheetPhysics {
   }
 
   @override
-  Simulation? createBallisticSimulation(
-    ScrollMetrics position,
-    double velocity,
-  ) {
-    // If we're out of range and not headed back in range, defer to the parent
-    // ballistics, which should put us back in range at a page boundary.
-    // if ((velocity <= 0.0 && position.pixels <= position.minScrollExtent) ||
-    //     (velocity >= 0.0 && position.pixels >= position.maxScrollExtent))
-    //   return super.createBallisticSimulation(position, velocity);
+  Simulation? createBallisticSimulation(ScrollMetrics position, double velocity) {
     final Tolerance tolerance = toleranceFor(position);
     final double target = _getTargetPixels(position, tolerance, velocity);
     if (target != position.pixels) {
@@ -477,7 +440,6 @@ class SnapSheetPhysics extends ScrollPhysics with SheetPhysics {
   int getPageFromPixels(double pixels, double extent) {
     final double actual = math.max(0, pixels) / math.max(1.0, extent);
     final int round = _nearestStopForExtent(actual);
-    //final double round = actual.roundToDouble();
     if ((actual - round).abs() < precisionErrorTolerance) {
       return round;
     }

@@ -10,10 +10,9 @@ import "package:flutter/widgets.dart";
 import "package:sheet/route.dart";
 import "package:sheet/sheet.dart";
 
-// TODO(jaime): Arbitrary values, keep them or make SheetRoute abstract
 const double _kWillPopThreshold = 0.8;
 const Duration _kSheetTransitionDuration = Duration(milliseconds: 300);
-const Color _kBarrierColor = Color(0x59000000);
+const Color _kBarrierColor = Color(0x50000000);
 
 /// A modal route that overlays a widget over the current route and animates
 /// it from the bottom
@@ -166,10 +165,7 @@ class SheetRoute<T> extends PageRoute<T> with DelegatedTransitionsRoute<T> {
   bool get opaque => false;
 
   @override
-  bool canDriveSecondaryTransitionForPreviousRoute(
-    Route<dynamic> previousRoute,
-  ) =>
-      true;
+  bool canDriveSecondaryTransitionForPreviousRoute(Route<dynamic> previousRoute) => true;
 
   @override
   Widget buildSecondaryTransitionForPreviousRoute(
@@ -187,17 +183,14 @@ class SheetRoute<T> extends PageRoute<T> with DelegatedTransitionsRoute<T> {
       controller!.velocity <= 0;
 
   Widget buildSheet(BuildContext context, Widget child) {
-    SheetPhysics? effectivePhysics = SnapSheetPhysics(
-      stops: stops ?? <double>[0, 1],
-      parent: physics,
-    );
+    SheetPhysics? effectivePhysics = SnapSheetPhysics(stops: stops ?? <double>[0, 1], parent: physics);
     if (!draggable) {
       effectivePhysics = const NeverDraggableSheetPhysics();
     }
     return Sheet.raw(
+      fit: fit,
       initialExtent: initialExtent,
       decorationBuilder: decorationBuilder,
-      fit: fit,
       physics: effectivePhysics,
       controller: sheetController,
       child: child,
@@ -461,7 +454,7 @@ class __SheetRouteContainerState extends State<_SheetRouteContainer> with Ticker
     _sheetController.position.preventDrag();
     _sheetController.position.animateTo(
       _sheetController.position.maxScrollExtent,
-      duration: const Duration(milliseconds: 400),
+      duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
     );
     if (route.popDisposition == RoutePopDisposition.doNotPop) {
@@ -473,7 +466,7 @@ class __SheetRouteContainerState extends State<_SheetRouteContainer> with Ticker
           if (disposition == RoutePopDisposition.pop) {
             _sheetController.relativeAnimateTo(
               0,
-              duration: const Duration(milliseconds: 400),
+              duration: const Duration(milliseconds: 300),
               curve: Curves.easeInOut,
             );
           } else {
@@ -493,10 +486,7 @@ class __SheetRouteContainerState extends State<_SheetRouteContainer> with Ticker
       namesRoute: true,
       label: route.sheetLabel,
       explicitChildNodes: true,
-      child: route.buildSheet(
-        context,
-        Builder(builder: widget.sheetRoute.builder),
-      ),
+      child: route.buildSheet(context, Builder(builder: widget.sheetRoute.builder)),
     );
   }
 }

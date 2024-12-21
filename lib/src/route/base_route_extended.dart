@@ -6,7 +6,8 @@ import "sheet_route.dart";
 
 mixin PreviousSheetRouteMixin<T> on PageRoute<T> {
   @override
-  bool canTransitionTo(TransitionRoute<dynamic> nextRoute) => nextRoute is SheetRoute || super.canTransitionTo(nextRoute);
+  bool canTransitionTo(TransitionRoute<dynamic> nextRoute) =>
+      nextRoute is SheetRoute || super.canTransitionTo(nextRoute);
 }
 
 class MaterialExtendedPageRoute<T> extends MaterialPageRoute<T>
