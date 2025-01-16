@@ -9,8 +9,7 @@ void main() => runApp(MyApp());
 final goRouter = GoRouter(routes: [
   GoRoute(
     path: '/',
-    pageBuilder: (context, state) =>
-        MaterialExtendedPage<void>(child: const BottomNavigationScaffold()),
+    pageBuilder: (context, state) => MaterialExtendedPage<void>(child: const BottomNavigationScaffold()),
   ),
 ]);
 
@@ -30,8 +29,7 @@ class BottomNavigationScaffold extends StatefulWidget {
   const BottomNavigationScaffold({super.key});
 
   @override
-  State<BottomNavigationScaffold> createState() =>
-      _BottomNavigationScaffoldState();
+  State<BottomNavigationScaffold> createState() => _BottomNavigationScaffoldState();
 }
 
 class _BottomNavigationScaffoldState extends State<BottomNavigationScaffold> {
@@ -51,16 +49,17 @@ class _BottomNavigationScaffoldState extends State<BottomNavigationScaffold> {
           ),
         ),
         BottomNavigationBar(
-            currentIndex: _currentNavitagionIndex,
-            onTap: (int value) {
-              setState(() {
-                _currentNavitagionIndex = value;
-              });
-            },
-            items: const <BottomNavigationBarItem>[
-              BottomNavigationBarItem(icon: Icon(Icons.pages), label: 'Sheet'),
-              BottomNavigationBarItem(icon: Icon(Icons.route), label: 'Route'),
-            ])
+          currentIndex: _currentNavitagionIndex,
+          onTap: (int value) {
+            setState(() {
+              _currentNavitagionIndex = value;
+            });
+          },
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(icon: Icon(Icons.pages), label: 'Sheet'),
+            BottomNavigationBarItem(icon: Icon(Icons.route), label: 'Route'),
+          ],
+        )
       ],
     );
   }

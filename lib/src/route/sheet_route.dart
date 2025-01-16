@@ -130,10 +130,7 @@ class SheetRoute<T> extends PageRoute<T> with DelegatedTransitionsRoute<T> {
   @override
   AnimationController createAnimationController() {
     assert(_routeAnimationController == null, "");
-    _routeAnimationController = AnimationController(
-      vsync: navigator!,
-      duration: transitionDuration,
-    );
+    _routeAnimationController = AnimationController(vsync: navigator!, duration: transitionDuration);
     return _routeAnimationController!;
   }
 

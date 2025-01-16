@@ -247,11 +247,11 @@ class Sheet extends StatelessWidget {
     final SheetController? effectiveController = controller ?? DefaultSheetController.of(context);
     final double? initialExtent = this.initialExtent?.clamp(minExtent ?? 0, maxExtent ?? double.infinity);
     return SheetScrollable(
-      initialExtent: initialExtent,
-      minInteractionExtent: minInteractionExtent,
       physics: physics,
+      initialExtent: initialExtent,
       controller: effectiveController,
       scrollBehavior: SheetBehavior(),
+      minInteractionExtent: minInteractionExtent,
       viewportBuilder: (BuildContext context, ViewportOffset offset) => _DefaultSheetScrollController(
         child: StatusBarGestureDetector.scrollToTop(
           child: SheetViewport(
