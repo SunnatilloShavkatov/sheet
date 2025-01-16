@@ -1,5 +1,3 @@
-// ignore_for_file: always_put_control_body_on_new_line
-
 import "dart:math" as math;
 
 import "package:flutter/material.dart";
@@ -513,7 +511,9 @@ class SheetPosition extends ScrollPositionWithSingleContext {
     double minScrollExtent,
     double maxScrollExtent,
   ) {
-    if (minScrollExtent == maxScrollExtent) return 1;
+    if (minScrollExtent == maxScrollExtent) {
+      return 1;
+    }
     final value = ((pixels - minScrollExtent) / (maxScrollExtent - minScrollExtent)).clamp(0.0, 1.0);
     return value;
   }
@@ -602,7 +602,9 @@ class RenderSheetViewport extends RenderBox
   AxisDirection _axisDirection;
 
   set axisDirection(AxisDirection value) {
-    if (value == _axisDirection) return;
+    if (value == _axisDirection) {
+      return;
+    }
     _axisDirection = value;
     markNeedsLayout();
   }
@@ -613,10 +615,16 @@ class RenderSheetViewport extends RenderBox
   ViewportOffset _offset;
 
   set offset(ViewportOffset value) {
-    if (value == _offset) return;
-    if (attached) _offset.removeListener(_hasDragged);
+    if (value == _offset) {
+      return;
+    }
+    if (attached) {
+      _offset.removeListener(_hasDragged);
+    }
     _offset = value;
-    if (attached) _offset.addListener(_hasDragged);
+    if (attached) {
+      _offset.addListener(_hasDragged);
+    }
     markNeedsLayout();
   }
 
@@ -625,7 +633,9 @@ class RenderSheetViewport extends RenderBox
   double _cacheExtent;
 
   set cacheExtent(double value) {
-    if (value == _cacheExtent) return;
+    if (value == _cacheExtent) {
+      return;
+    }
     _cacheExtent = value;
     markNeedsLayout();
   }
@@ -635,7 +645,9 @@ class RenderSheetViewport extends RenderBox
   SheetFit _fit;
 
   set fit(SheetFit value) {
-    if (value == _fit) return;
+    if (value == _fit) {
+      return;
+    }
     _fit = value;
     markNeedsLayout();
   }
@@ -672,7 +684,9 @@ class RenderSheetViewport extends RenderBox
   void setupParentData(RenderObject child) {
     // We don't actually use the offset argument in BoxParentData, so let's
     // avoid allocating it at all.
-    if (child.parentData is! ParentData) child.parentData = ParentData();
+    if (child.parentData is! ParentData) {
+      child.parentData = ParentData();
+    }
   }
 
   @override
@@ -714,7 +728,9 @@ class RenderSheetViewport extends RenderBox
   bool _resizeable;
 
   set resizeable(bool value) {
-    if (value == _resizeable) return;
+    if (value == _resizeable) {
+      return;
+    }
     _resizeable = value;
     markNeedsLayout();
   }
@@ -736,8 +752,12 @@ class RenderSheetViewport extends RenderBox
 
   double get _maxScrollExtent {
     assert(hasSize);
-    if (_childExtentBeforeOverflow != null) return _childExtentBeforeOverflow!;
-    if (child == null) return 0;
+    if (_childExtentBeforeOverflow != null) {
+      return _childExtentBeforeOverflow!;
+    }
+    if (child == null) {
+      return 0;
+    }
     switch (axis) {
       case Axis.horizontal:
         return math.max(0, child!.size.width - size.width);

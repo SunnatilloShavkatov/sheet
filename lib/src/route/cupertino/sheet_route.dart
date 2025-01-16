@@ -223,7 +223,6 @@ class CupertinoSheetBottomRouteTransition extends StatelessWidget {
   // now that has corners with radius
   Radius _getRadiusForDevice(MediaQueryData mediaQuery) {
     final double topPadding = mediaQuery.padding.top;
-    // Round corners for iPhone devices from X to the newest version
     final bool isRoundedDevice =
         defaultTargetPlatform == TargetPlatform.iOS && topPadding > _kRoundedDeviceStatusBarHeight;
     return isRoundedDevice ? _kRoundedDeviceRadius : Radius.zero;

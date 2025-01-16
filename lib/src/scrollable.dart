@@ -1,17 +1,3 @@
-// This file is the same as https://github.com/flutter/flutter/blob/master/packages/flutter/lib/src/widgets/scrollable.dart
-// Canges done:
-//  - Rename file from Scrollable to SheetDraggable
-//  - Extend ScrollContext as SheetContext to add initialExtent
-//  - Change RawGestureDetector behavior to HitTestBehavior.deferToChild
-//      so it can be hit behind the sheet
-//  - Change Add MinInteractionZone
-
-// Copyright 2014 The Flutter Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
-// ignore_for_file: always_put_control_body_on_new_line
-
 import "dart:async";
 import "dart:math" as math;
 
@@ -282,7 +268,9 @@ class SheetScrollable extends StatefulWidget {
     if (futures.isEmpty || duration == Duration.zero) {
       return Future<void>.value();
     }
-    if (futures.length == 1) return futures.single;
+    if (futures.length == 1) {
+      return futures.single;
+    }
     return Future.wait<void>(futures).then<void>((List<void> _) => null);
   }
 }
@@ -461,7 +449,9 @@ class SheetState extends State<SheetScrollable>
       _effectiveScrollController.attach(position);
     }
 
-    if (_shouldUpdatePosition(oldWidget)) _updatePosition();
+    if (_shouldUpdatePosition(oldWidget)) {
+      _updatePosition();
+    }
   }
 
   @override
@@ -505,7 +495,9 @@ class SheetState extends State<SheetScrollable>
   @override
   @protected
   void setCanDrag(bool canDrag) {
-    if (canDrag == _lastCanDrag && (!canDrag || widget.axis == _lastAxisDirection)) return;
+    if (canDrag == _lastCanDrag && (!canDrag || widget.axis == _lastAxisDirection)) {
+      return;
+    }
     if (!canDrag) {
       _gestureRecognizers = const <Type, GestureRecognizerFactory>{};
       // Cancel the active hold/drag (if any) because the gesture recognizers
@@ -571,7 +563,9 @@ class SheetState extends State<SheetScrollable>
   @override
   @protected
   void setIgnorePointer(bool value) {
-    if (_shouldIgnorePointer == value) return;
+    if (_shouldIgnorePointer == value) {
+      return;
+    }
     _shouldIgnorePointer = value;
     if (_ignorePointerKey.currentContext != null) {
       final RenderIgnorePointer renderBox =
@@ -639,17 +633,11 @@ class SheetState extends State<SheetScrollable>
     _drag = null;
   }
 
-  // SCROLL WHEEL
-
-  // Returns the offset that should result from applying [event] to the current
-  // position, taking min/max scroll extent into account.
   double _targetScrollOffsetForPointerScroll(double delta) => math.min(
         math.max(position.pixels + delta, position.minScrollExtent),
         position.maxScrollExtent,
       );
 
-  // Returns the delta that should result from applying [event] with axis and
-  // direction taken into account.
   double _pointerSignalEventDelta(PointerScrollEvent event) {
     double delta = widget.axis == Axis.horizontal ? event.scrollDelta.dx : event.scrollDelta.dy;
 
@@ -666,7 +654,6 @@ class SheetState extends State<SheetScrollable>
       }
       final double delta = _pointerSignalEventDelta(event);
       final double targetScrollOffset = _targetScrollOffsetForPointerScroll(delta);
-      // Only express interest in the event if it would actually result in a scroll.
       if (delta != 0.0 && targetScrollOffset != position.pixels) {
         GestureBinding.instance.pointerSignalResolver.register(event, _handlePointerScroll);
       }
@@ -682,23 +669,12 @@ class SheetState extends State<SheetScrollable>
     }
   }
 
-  // DESCRIPTION
-
   @override
   Widget build(BuildContext context) {
     assert(_position != null);
-    // _ScrollableScope must be placed above the BuildContext returned by notificationContext
-    // so that we can get this ScrollableState by doing the following:
-    //
-    // ScrollNotification notification;
-    // Scrollable.of(notification.context)
-    //
-    // Since notificationContext is pointing to _gestureDetectorKey.context, _ScrollableScope
-    // must be placed above the widget using it: RawGestureDetector
     Widget result = _ScrollableScope(
       scrollable: this,
       position: position,
-      // TODO(ianh): Having all these global keys is sad.
       child: Listener(
         onPointerSignal: _receivedPointerSignal,
         child: RawGestureDetector(
@@ -713,10 +689,6 @@ class SheetState extends State<SheetScrollable>
               direction: flipAxisDirection(widget.axisDirection),
               child: IgnorePointer(
                 ignoring: false,
-                // Using ignore pointer will prioritize this scroll to the inner one
-                // key: _ignorePointerKey,
-                // ignoring: _shouldIgnorePointer,
-                //ignoringSemantics: false,
                 child: widget.viewportBuilder(context, position),
               ),
             ),
@@ -817,7 +789,9 @@ class _RenderScrollSemantics extends RenderProxyBox {
   ScrollPosition _position;
 
   set position(ScrollPosition value) {
-    if (value == _position) return;
+    if (value == _position) {
+      return;
+    }
     _position.removeListener(markNeedsSemanticsUpdate);
     _position = value;
     _position.addListener(markNeedsSemanticsUpdate);
@@ -829,7 +803,9 @@ class _RenderScrollSemantics extends RenderProxyBox {
   bool _allowImplicitScrolling;
 
   set allowImplicitScrolling(bool value) {
-    if (value == _allowImplicitScrolling) return;
+    if (value == _allowImplicitScrolling) {
+      return;
+    }
     _allowImplicitScrolling = value;
     markNeedsSemanticsUpdate();
   }
@@ -838,7 +814,9 @@ class _RenderScrollSemantics extends RenderProxyBox {
   int? _semanticChildCount;
 
   set semanticChildCount(int? value) {
-    if (value == semanticChildCount) return;
+    if (value == semanticChildCount) {
+      return;
+    }
     _semanticChildCount = value;
     markNeedsSemanticsUpdate();
   }
