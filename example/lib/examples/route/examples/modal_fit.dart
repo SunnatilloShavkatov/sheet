@@ -14,7 +14,7 @@ class _ModalFitState extends State<ModalFit> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(milliseconds: 300), () {
+    Future.delayed(const Duration(milliseconds: 300), () {
       setState(() {
         _isSheetOpen = true;
       });
@@ -22,40 +22,34 @@ class _ModalFitState extends State<ModalFit> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return SheetMediaQuery(
-      child: ListView(
-        shrinkWrap: true,
-        children: <Widget>[
+  Widget build(BuildContext context) => SheetMediaQuery(
+    child: ListView(
+      shrinkWrap: true,
+      children: <Widget>[
+        ListTile(title: const Text('Edit'), leading: const Icon(Icons.edit), onTap: () => Navigator.of(context).pop()),
+        ListTile(
+          title: const Text('Copy'),
+          leading: const Icon(Icons.content_copy),
+          onTap: () => Navigator.of(context).pop(),
+        ),
+        if (_isSheetOpen) ...[
           ListTile(
-            title: const Text('Edit'),
-            leading: const Icon(Icons.edit),
+            title: const Text('Cut'),
+            leading: const Icon(Icons.content_cut),
             onTap: () => Navigator.of(context).pop(),
           ),
           ListTile(
-            title: const Text('Copy'),
-            leading: const Icon(Icons.content_copy),
+            title: const Text('Move'),
+            leading: const Icon(Icons.folder_open),
             onTap: () => Navigator.of(context).pop(),
           ),
-          if (_isSheetOpen) ...[
-            ListTile(
-              title: const Text('Cut'),
-              leading: const Icon(Icons.content_cut),
-              onTap: () => Navigator.of(context).pop(),
-            ),
-            ListTile(
-              title: const Text('Move'),
-              leading: const Icon(Icons.folder_open),
-              onTap: () => Navigator.of(context).pop(),
-            ),
-            ListTile(
-              title: const Text('Delete'),
-              leading: const Icon(Icons.delete),
-              onTap: () => Navigator.of(context).pop(),
-            )
-          ],
+          ListTile(
+            title: const Text('Delete'),
+            leading: const Icon(Icons.delete),
+            onTap: () => Navigator.of(context).pop(),
+          ),
         ],
-      ),
-    );
-  }
+      ],
+    ),
+  );
 }

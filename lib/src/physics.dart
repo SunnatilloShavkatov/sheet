@@ -1,9 +1,10 @@
-import "dart:math" as math;
+// ignore_for_file: parameter_assignments
+import 'dart:math' as math;
 
-import "package:flutter/foundation.dart";
-import "package:flutter/gestures.dart";
-import "package:flutter/material.dart";
-import "package:sheet/sheet.dart";
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
+import 'package:sheet/sheet.dart';
 
 mixin SheetPhysics on ScrollPhysics {
   bool shouldReload(covariant ScrollPhysics old) => false;
@@ -31,18 +32,13 @@ class AlwaysDraggableSheetPhysics extends AlwaysScrollableScrollPhysics with She
 /// Creates sheet physics that bounce back from the edge.
 class BouncingSheetPhysics extends ScrollPhysics with SheetPhysics {
   /// Creates sheet physics that bounce back from the edge.
-  const BouncingSheetPhysics({
-    super.parent,
-    this.overflowViewport = false,
-  });
+  const BouncingSheetPhysics({super.parent, this.overflowViewport = false});
 
   final bool overflowViewport;
 
   @override
-  BouncingSheetPhysics applyTo(ScrollPhysics? ancestor) => BouncingSheetPhysics(
-        parent: buildParent(ancestor),
-        overflowViewport: overflowViewport,
-      );
+  BouncingSheetPhysics applyTo(ScrollPhysics? ancestor) =>
+      BouncingSheetPhysics(parent: buildParent(ancestor), overflowViewport: overflowViewport);
 
   @override
   bool shouldReload(covariant ScrollPhysics old) =>
@@ -60,10 +56,10 @@ class BouncingSheetPhysics extends ScrollPhysics with SheetPhysics {
 
   @override
   double applyPhysicsToUserOffset(ScrollMetrics position, double offset) {
-    assert(offset != 0.0, "The offset cannot be 0.0");
+    assert(offset != 0.0, 'The offset cannot be 0.0');
     assert(
       position.minScrollExtent <= position.maxScrollExtent,
-      "The minScrollExtent must be less than or equal to the maxScrollExtent",
+      'The minScrollExtent must be less than or equal to the maxScrollExtent',
     );
 
     if (!position.outOfRange) {
@@ -75,23 +71,18 @@ class BouncingSheetPhysics extends ScrollPhysics with SheetPhysics {
     final double overscrollPast = math.max(overscrollPastStart, overscrollPastEnd);
     final bool easing = (overscrollPastStart > 0.0 && offset < 0.0) || (overscrollPastEnd > 0.0 && offset > 0.0);
 
-    final double friction = easing
-        // Apply less resistance when easing the overscroll vs tensioning.
-        ? frictionFactor(
-            (overscrollPast - offset.abs()) / position.viewportDimension,
-          )
-        : frictionFactor(overscrollPast / position.viewportDimension);
+    final double friction =
+        easing
+            // Apply less resistance when easing the overscroll vs tensioning.
+            ? frictionFactor((overscrollPast - offset.abs()) / position.viewportDimension)
+            : frictionFactor(overscrollPast / position.viewportDimension);
     final double direction = offset.sign;
 
     return direction * _applyFriction(overscrollPast, offset.abs(), friction);
   }
 
-  static double _applyFriction(
-    double extentOutside,
-    double absDelta,
-    double gamma,
-  ) {
-    assert(absDelta > 0, "");
+  static double _applyFriction(double extentOutside, double absDelta, double gamma) {
+    assert(absDelta > 0, '');
     double total = 0;
     if (extentOutside > 0) {
       final double deltaToLimit = extentOutside / gamma;
@@ -106,35 +97,30 @@ class BouncingSheetPhysics extends ScrollPhysics with SheetPhysics {
 
   @override
   double applyBoundaryConditions(ScrollMetrics position, double value) {
-    assert(
-      () {
-        if (value == position.pixels) {
-          throw FlutterError.fromParts(<DiagnosticsNode>[
-            ErrorSummary(
-              "$runtimeType.applyBoundaryConditions() was called redundantly.",
-            ),
-            ErrorDescription(
-              "The proposed new position, $value, is exactly equal to the current position of the "
-              "given ${position.runtimeType}, ${position.pixels}.\n"
-              "The applyBoundaryConditions method should only be called when the value is "
-              "going to actually change the pixels, otherwise it is redundant.",
-            ),
-            DiagnosticsProperty<ScrollPhysics>(
-              "The physics object in question was",
-              this,
-              style: DiagnosticsTreeStyle.errorProperty,
-            ),
-            DiagnosticsProperty<ScrollMetrics>(
-              "The position object in question was",
-              position,
-              style: DiagnosticsTreeStyle.errorProperty,
-            ),
-          ]);
-        }
-        return true;
-      }(),
-      "",
-    );
+    assert(() {
+      if (value == position.pixels) {
+        throw FlutterError.fromParts(<DiagnosticsNode>[
+          ErrorSummary('$runtimeType.applyBoundaryConditions() was called redundantly.'),
+          ErrorDescription(
+            'The proposed new position, $value, is exactly equal to the current position of the '
+            'given ${position.runtimeType}, ${position.pixels}.\n'
+            'The applyBoundaryConditions method should only be called when the value is '
+            'going to actually change the pixels, otherwise it is redundant.',
+          ),
+          DiagnosticsProperty<ScrollPhysics>(
+            'The physics object in question was',
+            this,
+            style: DiagnosticsTreeStyle.errorProperty,
+          ),
+          DiagnosticsProperty<ScrollMetrics>(
+            'The position object in question was',
+            position,
+            style: DiagnosticsTreeStyle.errorProperty,
+          ),
+        ]);
+      }
+      return true;
+    }(), '');
     // Prevent scrolling beyond the maximum position
     if (value > position.maxScrollExtent) {
       return value - position.maxScrollExtent;
@@ -161,17 +147,10 @@ class BouncingSheetPhysics extends ScrollPhysics with SheetPhysics {
   }
 
   @override
-  Simulation? createBallisticSimulation(
-    ScrollMetrics position,
-    double velocity,
-  ) {
+  Simulation? createBallisticSimulation(ScrollMetrics position, double velocity) {
     if (position.outOfRange) {
       return BouncingScrollSimulation(
-        spring: const SpringDescription(
-          mass: 1.2,
-          stiffness: 200,
-          damping: 25,
-        ),
+        spring: const SpringDescription(mass: 1.2, stiffness: 200, damping: 25),
         position: position.pixels,
         velocity: velocity,
         leadingExtent: position.minScrollExtent,
@@ -203,11 +182,7 @@ class BouncingSheetPhysics extends ScrollPhysics with SheetPhysics {
   /// calculations.
   @override
   double carriedMomentum(double existingVelocity) =>
-      existingVelocity.sign *
-      math.min(
-        0.000816 * math.pow(existingVelocity.abs(), 1.967).toDouble(),
-        40000.0,
-      );
+      existingVelocity.sign * math.min(0.000816 * math.pow(existingVelocity.abs(), 1.967).toDouble(), 40000.0);
 
   // Eyeballed from observation to counter the effect of an unintended scroll
   // from the natural motion of lifting the finger after a scroll.
@@ -218,9 +193,7 @@ class BouncingSheetPhysics extends ScrollPhysics with SheetPhysics {
 /// Creates sheet physics that has no momentum after the user stops dragging.
 class NoMomentumSheetPhysics extends ScrollPhysics with SheetPhysics {
   /// Creates sheet physics that has no momentum after the user stops dragging.
-  const NoMomentumSheetPhysics({
-    super.parent,
-  });
+  const NoMomentumSheetPhysics({super.parent});
 
   @override
   NoMomentumSheetPhysics applyTo(ScrollPhysics? ancestor) => NoMomentumSheetPhysics(parent: buildParent(ancestor));
@@ -255,7 +228,7 @@ class NoMomentumSheetPhysics extends ScrollPhysics with SheetPhysics {
       } else if (position.pixels < position.minScrollExtent) {
         end = position.minScrollExtent;
       }
-      assert(end != null, "The end value must be set");
+      assert(end != null, 'The end value must be set');
       return ScrollSpringSimulation(
         spring,
         position.pixels,
@@ -277,35 +250,30 @@ class ClampingSheetPhysics extends ScrollPhysics with SheetPhysics {
 
   @override
   double applyBoundaryConditions(ScrollMetrics position, double value) {
-    assert(
-      () {
-        if (value == position.pixels) {
-          throw FlutterError.fromParts(<DiagnosticsNode>[
-            ErrorSummary(
-              "$runtimeType.applyBoundaryConditions() was called redundantly.",
-            ),
-            ErrorDescription(
-              "The proposed new position, $value, is exactly equal to the current position of the "
-              "given ${position.runtimeType}, ${position.pixels}.\n"
-              "The applyBoundaryConditions method should only be called when the value is "
-              "going to actually change the pixels, otherwise it is redundant.",
-            ),
-            DiagnosticsProperty<ScrollPhysics>(
-              "The physics object in question was",
-              this,
-              style: DiagnosticsTreeStyle.errorProperty,
-            ),
-            DiagnosticsProperty<ScrollMetrics>(
-              "The position object in question was",
-              position,
-              style: DiagnosticsTreeStyle.errorProperty,
-            ),
-          ]);
-        }
-        return true;
-      }(),
-      "",
-    );
+    assert(() {
+      if (value == position.pixels) {
+        throw FlutterError.fromParts(<DiagnosticsNode>[
+          ErrorSummary('$runtimeType.applyBoundaryConditions() was called redundantly.'),
+          ErrorDescription(
+            'The proposed new position, $value, is exactly equal to the current position of the '
+            'given ${position.runtimeType}, ${position.pixels}.\n'
+            'The applyBoundaryConditions method should only be called when the value is '
+            'going to actually change the pixels, otherwise it is redundant.',
+          ),
+          DiagnosticsProperty<ScrollPhysics>(
+            'The physics object in question was',
+            this,
+            style: DiagnosticsTreeStyle.errorProperty,
+          ),
+          DiagnosticsProperty<ScrollMetrics>(
+            'The position object in question was',
+            position,
+            style: DiagnosticsTreeStyle.errorProperty,
+          ),
+        ]);
+      }
+      return true;
+    }(), '');
     // hit top edge
     if (position.viewportDimension <= position.pixels && position.pixels < value) {
       return value - position.pixels;
@@ -328,14 +296,8 @@ class ClampingSheetPhysics extends ScrollPhysics with SheetPhysics {
       if (position.pixels < position.minScrollExtent) {
         end = position.minScrollExtent;
       }
-      assert(end != null, "");
-      return ScrollSpringSimulation(
-        spring,
-        position.pixels,
-        end!,
-        math.min(0, velocity),
-        tolerance: tolerance,
-      );
+      assert(end != null, '');
+      return ScrollSpringSimulation(spring, position.pixels, end!, math.min(0, velocity), tolerance: tolerance);
     }
     if (velocity.abs() < tolerance.velocity) {
       return null;
@@ -363,11 +325,7 @@ class ClampingSheetPhysics extends ScrollPhysics with SheetPhysics {
 ///
 class SnapSheetPhysics extends ScrollPhysics with SheetPhysics {
   /// Creates snapping physics for a [Sheet].
-  const SnapSheetPhysics({
-    super.parent,
-    this.stops = const <double>[],
-    this.relative = true,
-  });
+  const SnapSheetPhysics({super.parent, this.stops = const <double>[], this.relative = true});
 
   /// Positions where the sheet could be snapped once the user stops
   /// dragging
@@ -383,11 +341,8 @@ class SnapSheetPhysics extends ScrollPhysics with SheetPhysics {
   final bool relative;
 
   @override
-  SnapSheetPhysics applyTo(ScrollPhysics? ancestor) => SnapSheetPhysics(
-        parent: buildParent(ancestor),
-        stops: stops,
-        relative: relative,
-      );
+  SnapSheetPhysics applyTo(ScrollPhysics? ancestor) =>
+      SnapSheetPhysics(parent: buildParent(ancestor), stops: stops, relative: relative);
 
   @override
   bool shouldReload(covariant ScrollPhysics old) =>
@@ -450,14 +405,15 @@ class SnapSheetPhysics extends ScrollPhysics with SheetPhysics {
     if (stops.isEmpty) {
       return 0;
     }
-    final int stop = stops
-        .asMap()
-        .entries
-        .reduce(
-          (MapEntry<int, double> prev, MapEntry<int, double> curr) =>
-              (curr.value - extent).abs() < (prev.value - extent).abs() ? curr : prev,
-        )
-        .key;
+    final int stop =
+        stops
+            .asMap()
+            .entries
+            .reduce(
+              (MapEntry<int, double> prev, MapEntry<int, double> curr) =>
+                  (curr.value - extent).abs() < (prev.value - extent).abs() ? curr : prev,
+            )
+            .key;
     return stop;
   }
 
@@ -478,14 +434,14 @@ class SnapSheetPhysics extends ScrollPhysics with SheetPhysics {
   int? _getPage(ScrollMetrics position) {
     assert(
       !position.hasPixels || position.hasContentDimensions,
-      "Page value is only available after content dimensions are established.",
+      'Page value is only available after content dimensions are established.',
     );
     return !position.hasPixels
         ? null
         : getPageFromPixels(
-            position.pixels.clamp(position.minScrollExtent, position.maxScrollExtent),
-            extentFor(position),
-          );
+          position.pixels.clamp(position.minScrollExtent, position.maxScrollExtent),
+          extentFor(position),
+        );
   }
 }
 

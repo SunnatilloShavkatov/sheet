@@ -1,3 +1,5 @@
+// ignore_for_file: discarded_futures
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -5,6 +7,8 @@ import 'package:flutter/widgets.dart';
 import 'package:sheet/sheet.dart';
 
 class SnapSheet extends StatefulWidget {
+  const SnapSheet({super.key});
+
   @override
   State<SnapSheet> createState() => _SnapSheetState();
 }
@@ -20,11 +24,7 @@ class _SnapSheetState extends State<SnapSheet> {
   }
 
   void animateSheet() {
-    controller.relativeAnimateTo(
-      0.5,
-      duration: const Duration(milliseconds: 400),
-      curve: Curves.easeOut,
-    );
+    controller.relativeAnimateTo(0.5, duration: const Duration(milliseconds: 400), curve: Curves.easeOut);
   }
 
   @override
@@ -34,15 +34,10 @@ class _SnapSheetState extends State<SnapSheet> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Sheet(
-      elevation: 4,
-      physics: const SnapSheetPhysics(
-        stops: <double>[0.1, 0.5, 1],
-        parent: BouncingSheetPhysics(),
-      ),
-      child: Container(),
-      controller: controller,
-    );
-  }
+  Widget build(BuildContext context) => Sheet(
+    elevation: 4,
+    physics: const SnapSheetPhysics(stops: <double>[0.1, 0.5, 1], parent: BouncingSheetPhysics()),
+    controller: controller,
+    child: Container(),
+  );
 }

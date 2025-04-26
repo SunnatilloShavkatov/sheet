@@ -1,7 +1,11 @@
+// ignore_for_file: discarded_futures
+
 import 'package:flutter/material.dart';
 import 'package:sheet/sheet.dart';
 
 class FoldableScreenFloatingSheet extends StatefulWidget {
+  const FoldableScreenFloatingSheet({super.key});
+
   @override
   State<FoldableScreenFloatingSheet> createState() => _FitSheetState();
 }
@@ -17,8 +21,7 @@ class _FitSheetState extends State<FoldableScreenFloatingSheet> {
   }
 
   void animateSheet() {
-    controller.relativeAnimateTo(1,
-        duration: const Duration(milliseconds: 400), curve: Curves.easeOut);
+    controller.relativeAnimateTo(1, duration: const Duration(milliseconds: 400), curve: Curves.easeOut);
   }
 
   @override
@@ -28,32 +31,25 @@ class _FitSheetState extends State<FoldableScreenFloatingSheet> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return DisplayFeatureSubScreen(
-      anchorPoint: Offset.infinite,
-      child: Sheet.raw(
-        physics: const SnapSheetPhysics(
-          parent: BouncingSheetPhysics(overflowViewport: false),
-          stops: <double>[0, 1],
-        ),
-        padding: const EdgeInsets.all(20),
-        child: Container(
+  Widget build(BuildContext context) => DisplayFeatureSubScreen(
+    anchorPoint: Offset.infinite,
+    child: Sheet.raw(
+      physics: const SnapSheetPhysics(parent: BouncingSheetPhysics(), stops: <double>[0, 1]),
+      padding: const EdgeInsets.all(20),
+      controller: controller,
+      child: Container(
+        height: 200,
+        alignment: Alignment.topCenter,
+        child: SizedBox(
           height: 200,
-          alignment: Alignment.topCenter,
-          child: Container(
-            height: 200,
-            width: double.infinity,
-            child: Material(
-              elevation: 1,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              color: Colors.grey[900],
-            ),
+          width: double.infinity,
+          child: Material(
+            elevation: 1,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            color: Colors.grey[900],
           ),
         ),
-        controller: controller,
       ),
-    );
-  }
+    ),
+  );
 }

@@ -1,8 +1,8 @@
-import "package:flutter/cupertino.dart";
-import "package:flutter/material.dart";
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
-import "delegated_transitions_route.dart";
-import "sheet_route.dart";
+import 'package:sheet/src/route/delegated_transitions_route.dart';
+import 'package:sheet/src/route/sheet_route.dart';
 
 mixin PreviousSheetRouteMixin<T> on PageRoute<T> {
   @override
@@ -50,12 +50,8 @@ class MaterialExtendedPage<T> extends Page<T> {
 // This route uses the builder from the page to build its content. This ensures
 // the content is up to date after page updates.
 class _PageBasedMaterialPageRoute<T> extends MaterialExtendedPageRoute<T> {
-  _PageBasedMaterialPageRoute({
-    required MaterialExtendedPage<T> page,
-  }) : super(
-          settings: page,
-          builder: (BuildContext context) => page.child,
-        );
+  _PageBasedMaterialPageRoute({required MaterialExtendedPage<T> page})
+    : super(settings: page, builder: (BuildContext context) => page.child);
 
   MaterialExtendedPage<T> get _page => settings as MaterialExtendedPage<T>;
 
@@ -69,7 +65,7 @@ class _PageBasedMaterialPageRoute<T> extends MaterialExtendedPageRoute<T> {
   bool get fullscreenDialog => _page.fullscreenDialog;
 
   @override
-  String get debugLabel => "${super.debugLabel}(${_page.name})";
+  String get debugLabel => '${super.debugLabel}(${_page.name})';
 }
 
 class CupertinoExtendedPageRoute<T> extends CupertinoPageRoute<T>
@@ -113,12 +109,8 @@ class CupertinoExtendedPage<T> extends Page<T> {
 }
 
 class _PageBasedCupertinoPageRoute<T> extends CupertinoExtendedPageRoute<T> {
-  _PageBasedCupertinoPageRoute({
-    required CupertinoExtendedPage<T> page,
-  }) : super(
-          settings: page,
-          builder: (BuildContext context) => page.child,
-        );
+  _PageBasedCupertinoPageRoute({required CupertinoExtendedPage<T> page})
+    : super(settings: page, builder: (BuildContext context) => page.child);
 
   CupertinoExtendedPage<T> get _page => settings as CupertinoExtendedPage<T>;
 
@@ -135,5 +127,5 @@ class _PageBasedCupertinoPageRoute<T> extends CupertinoExtendedPageRoute<T> {
   bool get fullscreenDialog => _page.fullscreenDialog;
 
   @override
-  String get debugLabel => "${super.debugLabel}(${_page.name})";
+  String get debugLabel => '${super.debugLabel}(${_page.name})';
 }

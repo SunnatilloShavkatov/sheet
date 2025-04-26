@@ -1,5 +1,5 @@
-import "package:flutter/material.dart";
-import "package:sheet/sheet.dart";
+import 'package:flutter/material.dart';
+import 'package:sheet/sheet.dart';
 
 typedef SheetControllerCallback = void Function(SheetController controller);
 
@@ -14,11 +14,7 @@ typedef SheetControllerCallback = void Function(SheetController controller);
 ///
 ///
 class DefaultSheetController extends StatefulWidget {
-  const DefaultSheetController({
-    super.key,
-    required this.child,
-    this.onCreated,
-  });
+  const DefaultSheetController({super.key, required this.child, this.onCreated});
 
   final Widget child;
 
@@ -42,10 +38,7 @@ class _DefaultSheetControllerState extends State<DefaultSheetController> {
   }
 
   @override
-  Widget build(BuildContext context) => _InheritedSheetController(
-        controller: controller,
-        child: widget.child,
-      );
+  Widget build(BuildContext context) => _InheritedSheetController(controller: controller, child: widget.child);
 
   @override
   void dispose() {
@@ -55,10 +48,7 @@ class _DefaultSheetControllerState extends State<DefaultSheetController> {
 }
 
 class _InheritedSheetController extends InheritedWidget {
-  const _InheritedSheetController({
-    required super.child,
-    required this.controller,
-  });
+  const _InheritedSheetController({required super.child, required this.controller});
 
   final SheetController controller;
 

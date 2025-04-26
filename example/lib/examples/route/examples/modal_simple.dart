@@ -6,12 +6,10 @@ class SimpleModal extends StatelessWidget {
   final ScrollController scrollController;
 
   @override
-  Widget build(BuildContext context) {
-    return Material(
-        child: CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-          leading: Container(), middle: const Text('Modal Page')),
+  Widget build(BuildContext context) => Material(
+    child: CupertinoPageScaffold(
+      navigationBar: CupertinoNavigationBar(leading: Container(), middle: const Text('Modal Page')),
       child: const Center(),
-    ));
-  }
+    ),
+  );
 }

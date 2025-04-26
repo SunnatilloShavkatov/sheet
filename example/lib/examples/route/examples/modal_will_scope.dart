@@ -1,3 +1,5 @@
+// ignore_for_file: unawaited_futures
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -5,19 +7,18 @@ class ModalWillScope extends StatelessWidget {
   const ModalWillScope({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Material(
-      child: PopScope(
-        canPop: false,
-        onPopInvokedWithResult: (didPop, _) async {
-          if (didPop) {
-            return;
-          }
-          final sheetNavigator = Navigator.of(context);
-          showCupertinoDialog<void>(
-            context: context,
-            builder: (BuildContext context) {
-              return CupertinoAlertDialog(
+  Widget build(BuildContext context) => Material(
+    child: PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, _) async {
+        if (didPop) {
+          return;
+        }
+        final sheetNavigator = Navigator.of(context);
+        showCupertinoDialog<void>(
+          context: context,
+          builder:
+              (BuildContext context) => CupertinoAlertDialog(
                 title: const Text('Should Close?'),
                 actions: <Widget>[
                   CupertinoButton(
@@ -34,15 +35,13 @@ class ModalWillScope extends StatelessWidget {
                     },
                   ),
                 ],
-              );
-            },
-          );
-        },
-        child: CupertinoPageScaffold(
-          navigationBar: CupertinoNavigationBar(leading: Container(), middle: const Text('Modal Page')),
-          child: const Center(),
-        ),
+              ),
+        );
+      },
+      child: CupertinoPageScaffold(
+        navigationBar: CupertinoNavigationBar(leading: Container(), middle: const Text('Modal Page')),
+        child: const Center(),
       ),
-    );
-  }
+    ),
+  );
 }

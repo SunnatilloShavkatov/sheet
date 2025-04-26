@@ -1,3 +1,5 @@
+// ignore_for_file: discarded_futures
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -5,6 +7,8 @@ import 'package:flutter/widgets.dart';
 import 'package:sheet/sheet.dart';
 
 class NoMomentumSheet extends StatefulWidget {
+  const NoMomentumSheet({super.key});
+
   @override
   State<NoMomentumSheet> createState() => _NoMomentumSheetState();
 }
@@ -20,8 +24,7 @@ class _NoMomentumSheetState extends State<NoMomentumSheet> {
   }
 
   void animateSheet() {
-    controller.relativeAnimateTo(0.2,
-        duration: const Duration(milliseconds: 400), curve: Curves.easeOut);
+    controller.relativeAnimateTo(0.2, duration: const Duration(milliseconds: 400), curve: Curves.easeOut);
   }
 
   @override
@@ -31,14 +34,12 @@ class _NoMomentumSheetState extends State<NoMomentumSheet> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Sheet(
-      minExtent: 100,
-      maxExtent: 400,
-      elevation: 4,
-      physics: const NoMomentumSheetPhysics(),
-      child: Container(),
-      controller: controller,
-    );
-  }
+  Widget build(BuildContext context) => Sheet(
+    minExtent: 100,
+    maxExtent: 400,
+    elevation: 4,
+    physics: const NoMomentumSheetPhysics(),
+    controller: controller,
+    child: Container(),
+  );
 }

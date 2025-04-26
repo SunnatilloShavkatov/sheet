@@ -1,6 +1,6 @@
 // ignore_for_file: discarded_futures
 
-import "package:flutter/material.dart";
+import 'package:flutter/material.dart';
 
 /// A mixin used by routes to allow the top route define how the bottom route
 /// will animate when the top route enters and exits.
@@ -57,8 +57,7 @@ mixin DelegatedTransitionsRoute<T> on ModalRoute<T> {
     BuildContext context,
     Animation<double> secondaryAnimation,
     Widget child,
-  ) =>
-      child;
+  ) => child;
 
   /// Returns true if the [previousRoute] bottom route should delegate the
   /// `secondaryAnimation` transition when this route is pushed on top of it
@@ -82,10 +81,7 @@ mixin DelegatedTransitionsRoute<T> on ModalRoute<T> {
   ///
   ///  * [buildSecondaryTransitionForPreviousRoute], to define
   ///    [previousRoute]'s `secondaryAnimation` transition when this is true
-  bool canDriveSecondaryTransitionForPreviousRoute(
-    Route<dynamic> previousRoute,
-  ) =>
-      false;
+  bool canDriveSecondaryTransitionForPreviousRoute(Route<dynamic> previousRoute) => false;
 
   List<DelegatedTransitionsRoute<dynamic>>? _nextRoutes;
 
@@ -122,20 +118,11 @@ mixin DelegatedTransitionsRoute<T> on ModalRoute<T> {
       for (final DelegatedTransitionsRoute<dynamic> nextRoute in _nextRoutes!) {
         final ProxyAnimation secondaryAnimation = ProxyAnimation(nextRoute.animation);
         // assert(!nextRoute._transitionCompleter.isCompleted,  'Cannot reuse a ${nextRoute.runtimeType} after disposing it.');
-        proxyChild = nextRoute.buildSecondaryTransitionForPreviousRoute(
-          context,
-          secondaryAnimation,
-          child,
-        );
+        proxyChild = nextRoute.buildSecondaryTransitionForPreviousRoute(context, secondaryAnimation, child);
       }
 
       final ProxyAnimation proxySecondaryAnimation = ProxyAnimation(kAlwaysDismissedAnimation);
-      return super.buildTransitions(
-        context,
-        animation,
-        proxySecondaryAnimation,
-        proxyChild,
-      );
+      return super.buildTransitions(context, animation, proxySecondaryAnimation, proxyChild);
     } else {
       return super.buildTransitions(context, animation, secondaryAnimation, child);
     }

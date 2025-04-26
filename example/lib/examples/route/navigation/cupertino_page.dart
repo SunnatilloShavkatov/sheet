@@ -1,3 +1,5 @@
+// ignore_for_file: discarded_futures
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sheet/route.dart';
@@ -10,13 +12,13 @@ class Book {
 }
 
 class CupertinoBooksApp extends StatefulWidget {
+  const CupertinoBooksApp({super.key});
+
   @override
   State<StatefulWidget> createState() => _CupertinoBooksAppState();
 }
 
 class _CupertinoBooksAppState extends State<CupertinoBooksApp> {
-  Book? _selectedBook;
-
   List<Book> books = <Book>[
     const Book('Stranger in a Strange Land', 'Robert A. Heinlein'),
     const Book('Foundation', 'Isaac Asimov'),
@@ -26,66 +28,39 @@ class _CupertinoBooksAppState extends State<CupertinoBooksApp> {
   Brightness brightness = Brightness.light;
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: brightness == Brightness.light ? ThemeData.light() : ThemeData.dark(),
-      title: 'Books App',
-      builder: (BuildContext context, Widget? child) {
-        return CupertinoTheme(
-          data: CupertinoThemeData(brightness: brightness),
-          child: child!,
-        );
-      },
-      home: Navigator(
-        pages: <Page<dynamic>>[
-          MaterialExtendedPage<bool>(
-            key: const ValueKey<String>('BooksListPage'),
-            child: BooksListScreen(
-              books: books,
-              onTapped: _handleBookTapped,
-              onBrightnessChanged: (Brightness brightness) {
-                setState(() {
-                  this.brightness = brightness;
-                });
-              },
-            ),
+  Widget build(BuildContext context) => MaterialApp(
+    debugShowCheckedModeBanner: false,
+    theme: brightness == Brightness.light ? ThemeData.light() : ThemeData.dark(),
+    title: 'Books App',
+    builder:
+        (BuildContext context, Widget? child) =>
+            CupertinoTheme(data: CupertinoThemeData(brightness: brightness), child: child!),
+    home: Navigator(
+      pages: <Page<dynamic>>[
+        MaterialExtendedPage<bool>(
+          key: const ValueKey<String>('BooksListPage'),
+          child: BooksListScreen(
+            books: books,
+            onTapped: _handleBookTapped,
+            onBrightnessChanged: (Brightness brightness) {
+              setState(() {
+                this.brightness = brightness;
+              });
+            },
           ),
-          if (_selectedBook != null)
-            CupertinoSheetPage<void>(
-              key: ValueKey<Book?>(_selectedBook),
-              child: BookDetailsScreen(book: _selectedBook!),
-            )
-        ],
-        onPopPage: (Route<dynamic> route, dynamic result) {
-          if (!route.didPop(result)) {
-            return false;
-          }
-
-          // Update the list of pages by setting _selectedBook to null
-          setState(() {
-            _selectedBook = null;
-          });
-
-          return true;
-        },
-      ),
-    );
-  }
+        ),
+      ],
+      onDidRemovePage: (Page<Object?> route) {},
+    ),
+  );
 
   void _handleBookTapped(Book book) {
-    setState(() {
-      _selectedBook = book;
-    });
+    setState(() {});
   }
 }
 
 class BooksListScreen extends StatelessWidget {
-  const BooksListScreen({
-    required this.books,
-    required this.onTapped,
-    required this.onBrightnessChanged,
-  });
+  const BooksListScreen({super.key, required this.books, required this.onTapped, required this.onBrightnessChanged});
 
   final List<Book> books;
   final ValueChanged<Book> onTapped;
@@ -96,28 +71,24 @@ class BooksListScreen extends StatelessWidget {
     final Brightness brightness = Theme.of(context).brightness;
     return Scaffold(
       appBar: CupertinoNavigationBar(
-        leading: BackButton(onPressed: () {
-          Navigator.of(context, rootNavigator: true).pop();
-        }),
+        leading: BackButton(
+          onPressed: () {
+            Navigator.of(context, rootNavigator: true).pop();
+          },
+        ),
         middle: const Text('Book'),
         trailing: IconButton(
           icon: Icon(brightness == Brightness.light ? Icons.nightlight_round : Icons.wb_sunny),
           onPressed: () {
-            onBrightnessChanged(
-              brightness == Brightness.light ? Brightness.dark : Brightness.light,
-            );
+            onBrightnessChanged(brightness == Brightness.light ? Brightness.dark : Brightness.light);
           },
         ),
       ),
       body: SafeArea(
         child: ListView(
           children: <Widget>[
-            for (Book book in books)
-              ListTile(
-                title: Text(book.title),
-                subtitle: Text(book.author),
-                onTap: () => onTapped(book),
-              )
+            for (final Book book in books)
+              ListTile(title: Text(book.title), subtitle: Text(book.author), onTap: () => onTapped(book)),
           ],
         ),
       ),
@@ -126,36 +97,32 @@ class BooksListScreen extends StatelessWidget {
 }
 
 class BookDetailsScreen extends StatelessWidget {
-  const BookDetailsScreen({required this.book});
+  const BookDetailsScreen({super.key, required this.book});
 
   final Book book;
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const CupertinoNavigationBar(middle: Text('Book')),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0) + const EdgeInsets.only(top: 52.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Text(book.title, style: Theme.of(context).textTheme.titleLarge),
-            Text(book.author, style: Theme.of(context).textTheme.titleMedium),
-          ],
-        ),
+  Widget build(BuildContext context) => Scaffold(
+    appBar: const CupertinoNavigationBar(middle: Text('Book')),
+    body: Padding(
+      padding: const EdgeInsets.all(8) + const EdgeInsets.only(top: 52),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Text(book.title, style: Theme.of(context).textTheme.titleLarge),
+          Text(book.author, style: Theme.of(context).textTheme.titleMedium),
+        ],
       ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
-        onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute<void>(builder: (BuildContext context) {
-            return Scaffold(
-              appBar: AppBar(
-                title: const Text('Invalid'),
-              ),
-            );
-          }));
-        },
-      ),
-    );
-  }
+    ),
+    floatingActionButton: FloatingActionButton(
+      child: const Icon(Icons.add),
+      onPressed: () {
+        Navigator.of(context).push(
+          MaterialPageRoute<void>(
+            builder: (BuildContext context) => Scaffold(appBar: AppBar(title: const Text('Invalid'))),
+          ),
+        );
+      },
+    ),
+  );
 }

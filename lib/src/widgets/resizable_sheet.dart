@@ -1,10 +1,10 @@
 // ignore_for_file: always_put_control_body_on_new_line
 
-import "dart:math";
+import 'dart:math';
 
-import "package:flutter/rendering.dart";
-import "package:flutter/widgets.dart";
-import "package:sheet/sheet.dart";
+import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
+import 'package:sheet/sheet.dart';
 
 /// A widget that allows to resize the child according to offset
 /// of a sheet
@@ -26,11 +26,8 @@ class ResizableSheetChild extends SingleChildRenderObjectWidget {
   final ViewportOffset offset;
 
   @override
-  RenderResizableSheetChildBox createRenderObject(BuildContext context) => RenderResizableSheetChildBox(
-        offset: offset,
-        minExtent: minExtent,
-        resizable: resizable,
-      );
+  RenderResizableSheetChildBox createRenderObject(BuildContext context) =>
+      RenderResizableSheetChildBox(offset: offset, minExtent: minExtent, resizable: resizable);
 
   @override
   void updateRenderObject(BuildContext context, RenderResizableSheetChildBox renderObject) {
@@ -48,10 +45,10 @@ class RenderResizableSheetChildBox extends RenderShiftedBox {
     required double minExtent,
     RenderBox? child,
     bool resizable = true,
-  })  : _offset = offset,
-        _minExtent = minExtent,
-        _resizable = resizable,
-        super(child);
+  }) : _offset = offset,
+       _minExtent = minExtent,
+       _resizable = resizable,
+       super(child);
 
   ViewportOffset get offset => _offset;
   ViewportOffset _offset;
@@ -109,10 +106,7 @@ class RenderResizableSheetChildBox extends RenderShiftedBox {
     // If not resizable we send constraints to child and
     // parent size is the same as child
     if (!resizable) {
-      child!.layout(
-        constraints,
-        parentUsesSize: true,
-      );
+      child!.layout(constraints, parentUsesSize: true);
       size = child!.size;
       childParentData.offset = Offset.zero;
       return;
@@ -121,10 +115,7 @@ class RenderResizableSheetChildBox extends RenderShiftedBox {
     // The height of the child will be the maximum between the offset pixels
     // and the minExtent
     final double extend = max(_offset.pixels, minExtent);
-    child!.layout(
-      constraints.copyWith(maxHeight: extend, minHeight: extend),
-      parentUsesSize: true,
-    );
+    child!.layout(constraints.copyWith(maxHeight: extend, minHeight: extend), parentUsesSize: true);
 
     size = constraints.biggest;
     childParentData.offset = Offset.zero;

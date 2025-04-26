@@ -9,31 +9,21 @@ class FloatingModal extends StatelessWidget {
   final Color? backgroundColor;
 
   @override
-  Widget build(BuildContext context) {
-    return DisplayFeatureSubScreen(
-      anchorPoint: Offset.infinite,
-      child: SafeArea(
-        minimum: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        child: Material(
-          color: backgroundColor,
-          clipBehavior: Clip.antiAlias,
-          borderRadius: BorderRadius.circular(12),
-          child: child,
-        ),
+  Widget build(BuildContext context) => DisplayFeatureSubScreen(
+    anchorPoint: Offset.infinite,
+    child: SafeArea(
+      minimum: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+      child: Material(
+        color: backgroundColor,
+        clipBehavior: Clip.antiAlias,
+        borderRadius: BorderRadius.circular(12),
+        child: child,
       ),
-    );
-  }
+    ),
+  );
 }
 
 class FloatingSheetRoute<T> extends SheetRoute<T> {
-  FloatingSheetRoute({
-    required WidgetBuilder builder,
-  }) : super(
-          builder: (BuildContext context) {
-            return FloatingModal(
-              child: Builder(builder: builder),
-            );
-          },
-          fit: SheetFit.loose,
-        );
+  FloatingSheetRoute({required WidgetBuilder builder})
+    : super(builder: (BuildContext context) => FloatingModal(child: Builder(builder: builder)), fit: SheetFit.loose);
 }

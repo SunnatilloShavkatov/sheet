@@ -1,20 +1,6 @@
-import "package:flutter/widgets.dart";
-import "package:sheet/sheet.dart";
+import 'package:flutter/widgets.dart';
+import 'package:sheet/sheet.dart';
 
-/// A [ScrollController] suitable for use in a [SheetPrimaryScrollPosition] created
-/// by a [Sheet].
-///
-/// If a [Sheet] contains content that is exceeds the height
-/// of its container, this controller will allow the sheet to both be dragged to
-/// fill the container and then scroll the child content.
-///
-/// See also:
-///
-///  * [SheetPrimaryScrollPosition], which manages the positioning logic for
-///    this controller.
-///  * [PrimarySheetController], which can be used to establish a
-///    [_SheetScrollController] as the primary controller for
-///    descendants.
 class SheetPrimaryScrollController extends ScrollController {
   SheetPrimaryScrollController({
     super.initialScrollOffset,
@@ -31,13 +17,12 @@ class SheetPrimaryScrollController extends ScrollController {
     ScrollPhysics physics,
     ScrollContext context,
     ScrollPosition? oldPosition,
-  ) =>
-      SheetPrimaryScrollPosition(
-        physics: physics,
-        context: context,
-        oldPosition: oldPosition,
-        sheetContext: sheetContext,
-      );
+  ) => SheetPrimaryScrollPosition(
+    physics: physics,
+    context: context,
+    oldPosition: oldPosition,
+    sheetContext: sheetContext,
+  );
 }
 
 class _SheetScrollActivity extends ScrollActivity {
@@ -53,18 +38,6 @@ class _SheetScrollActivity extends ScrollActivity {
   double get velocity => 0;
 }
 
-/// A scroll position that manages scroll activities for
-/// [_SheetScrollController].
-///
-/// This class is a concrete subclass of [ScrollPosition] logic that handles a
-/// single [ScrollContext], such as a [Scrollable]. An instance of this class
-/// manages [ScrollActivity] instances, which changes the
-/// [SheetPrimaryScrollPosition.currentExtent] or visible content offset in the
-/// [Scrollable]'s [Viewport]
-///
-/// See also:
-///
-///  * [_SheetScrollController], which uses this as its [ScrollPosition].
 class SheetPrimaryScrollPosition extends ScrollPositionWithSingleContext {
   SheetPrimaryScrollPosition({
     required super.physics,
@@ -135,11 +108,7 @@ class SheetPrimaryScrollPosition extends ScrollPositionWithSingleContext {
         BallisticScrollActivity(
           this,
           ScrollSpringSimulation(
-            SpringDescription.withDampingRatio(
-              mass: 0.5,
-              stiffness: 100,
-              ratio: 1.1,
-            ),
+            SpringDescription.withDampingRatio(mass: 0.5, stiffness: 100, ratio: 1.1),
             pixels,
             0,
             velocity,

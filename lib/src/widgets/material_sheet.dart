@@ -1,5 +1,5 @@
-import "package:flutter/material.dart";
-import "package:sheet/sheet.dart";
+import 'package:flutter/material.dart';
+import 'package:sheet/sheet.dart';
 
 class MaterialSheet extends Sheet {
   const MaterialSheet({
@@ -29,12 +29,6 @@ class MaterialSheet extends Sheet {
     final ShapeBorder? shape = this.shape ?? bottomSheetTheme.shape;
     final Clip clipBehavior = this.clipBehavior ?? bottomSheetTheme.clipBehavior ?? Clip.none;
 
-    return Material(
-      color: color,
-      elevation: elevation,
-      shape: shape,
-      clipBehavior: clipBehavior,
-      child: child,
-    );
+    return Material(color: color, elevation: elevation, shape: shape, clipBehavior: clipBehavior, child: child);
   }
 }

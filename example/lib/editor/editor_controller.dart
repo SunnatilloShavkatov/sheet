@@ -1,8 +1,7 @@
 import 'package:equatable/equatable.dart';
+import 'package:example/editor/editor_child.dart';
 import 'package:flutter/material.dart';
 import 'package:sheet/sheet.dart';
-
-import 'editor_child.dart';
 
 class SheetConfigurationController extends ValueNotifier<SheetConfiguration> {
   SheetConfigurationController() : super(const SheetConfiguration());
@@ -35,17 +34,17 @@ class SheetConfiguration extends Equatable {
 
   @override
   List<Object?> get props => <Object?>[
-        minExtent,
-        maxExtent,
-        borderRadius,
-        type,
-        bounce,
-        fit,
-        childrenCount,
-        padding,
-        stops,
-        draggable,
-      ];
+    minExtent,
+    maxExtent,
+    borderRadius,
+    type,
+    bounce,
+    fit,
+    childrenCount,
+    padding,
+    stops,
+    draggable,
+  ];
 
   SheetConfiguration copyWith({
     double? minExtent,
@@ -58,18 +57,16 @@ class SheetConfiguration extends Equatable {
     double? padding,
     List<double>? stops,
     bool? draggable,
-  }) {
-    return SheetConfiguration(
-      minExtent: minExtent ?? this.minExtent,
-      maxExtent: maxExtent ?? this.maxExtent,
-      type: type ?? this.type,
-      borderRadius: borderRadius ?? this.borderRadius,
-      bounce: bounce ?? this.bounce,
-      fit: fit ?? this.fit,
-      childrenCount: childrenCount ?? this.childrenCount,
-      padding: padding ?? this.padding,
-      stops: stops ?? this.stops,
-      draggable: draggable ?? this.draggable,
-    );
-  }
+  }) => SheetConfiguration(
+    minExtent: minExtent ?? this.minExtent,
+    maxExtent: maxExtent ?? this.maxExtent,
+    type: type ?? this.type,
+    borderRadius: borderRadius ?? this.borderRadius,
+    bounce: bounce ?? this.bounce,
+    fit: fit ?? this.fit,
+    childrenCount: childrenCount ?? this.childrenCount,
+    padding: padding ?? this.padding,
+    stops: stops ?? this.stops,
+    draggable: draggable ?? this.draggable,
+  );
 }

@@ -6,13 +6,9 @@ class BounceOverflowSheet extends StatelessWidget {
   const BounceOverflowSheet({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Sheet(
-      physics: const BouncingSheetPhysics(overflowViewport: false),
-      child: Scaffold(
-        appBar: AppBar(title: const Text('Example')),
-      ),
-      minExtent: 100,
-    );
-  }
+  Widget build(BuildContext context) => Sheet(
+    physics: const BouncingSheetPhysics(),
+    minExtent: 100,
+    child: Scaffold(appBar: AppBar(title: const Text('Example'))),
+  );
 }

@@ -12,16 +12,13 @@ class DialogSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     final MediaQueryData mediaQuery = MediaQuery.of(context);
     return MediaQuery(
-      data: mediaQuery.copyWith(
-        padding: mediaQuery.padding + const EdgeInsets.only(top: 40),
-      ),
+      data: mediaQuery.copyWith(padding: mediaQuery.padding + const EdgeInsets.only(top: 40)),
       child: SafeArea(
         bottom: false,
         left: false,
         right: false,
         child: SizedBox.expand(
           child: Align(
-            alignment: Alignment.center,
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 800),
               child: Material(
@@ -40,8 +37,5 @@ class DialogSheet extends StatelessWidget {
 
 class DialogSheetRoute<T> extends SheetRoute<T> {
   DialogSheetRoute({required WidgetBuilder builder})
-      : super(
-          fit: SheetFit.loose,
-          builder: (BuildContext context) => DialogSheet(child: Builder(builder: builder)),
-        );
+    : super(fit: SheetFit.loose, builder: (BuildContext context) => DialogSheet(child: Builder(builder: builder)));
 }

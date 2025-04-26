@@ -1,14 +1,11 @@
-// Copyright 2014 The Flutter Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
 // ignore_for_file: deprecated_member_use, discarded_futures
 
-import "package:flutter/material.dart";
-import "package:flutter/rendering.dart";
-import "package:flutter/widgets.dart";
-import "package:sheet/route.dart";
-import "package:sheet/sheet.dart";
+import 'package:flutter/cupertino.dart' show CupertinoSheetRoute;
+import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
+import 'package:sheet/route.dart';
+import 'package:sheet/sheet.dart';
 
 const double _kWillPopThreshold = 0.8;
 const Duration _kSheetTransitionDuration = Duration(milliseconds: 300);
@@ -48,8 +45,8 @@ class SheetRoute<T> extends PageRoute<T> with DelegatedTransitionsRoute<T> {
     this.willPopThreshold = _kWillPopThreshold,
     this.decorationBuilder,
     super.settings,
-  })  : transitionDuration = duration ?? _kSheetTransitionDuration,
-        super(fullscreenDialog: true);
+  }) : transitionDuration = duration ?? _kSheetTransitionDuration,
+       super(fullscreenDialog: true);
 
   /// Builds the primary contents of the route.
   final WidgetBuilder builder;
@@ -129,7 +126,7 @@ class SheetRoute<T> extends PageRoute<T> with DelegatedTransitionsRoute<T> {
 
   @override
   AnimationController createAnimationController() {
-    assert(_routeAnimationController == null, "");
+    assert(_routeAnimationController == null, '');
     _routeAnimationController = AnimationController(vsync: navigator!, duration: transitionDuration);
     return _routeAnimationController!;
   }
@@ -141,11 +138,7 @@ class SheetRoute<T> extends PageRoute<T> with DelegatedTransitionsRoute<T> {
   }
 
   @override
-  Widget buildPage(
-    BuildContext context,
-    Animation<double> animation,
-    Animation<double> secondaryAnimation,
-  ) =>
+  Widget buildPage(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) =>
       _SheetRouteContainer(sheetRoute: this);
 
   @override
@@ -169,8 +162,7 @@ class SheetRoute<T> extends PageRoute<T> with DelegatedTransitionsRoute<T> {
     BuildContext context,
     Animation<double> secondaryAnimation,
     Widget child,
-  ) =>
-      child;
+  ) => child;
 
   /// Returns true if the controller should prevent popping for a given extent
   @protected
@@ -195,24 +187,6 @@ class SheetRoute<T> extends PageRoute<T> with DelegatedTransitionsRoute<T> {
   }
 }
 
-/// A page that creates a material style [SheetRoute].
-///
-/// By default, when a modal route is replaced by another, the previous route
-/// remains in memory. To free all the resources when this is not necessary, set
-/// [maintainState] to false.
-///
-/// The `fullscreenDialog` property specifies whether the incoming route is a
-/// fullscreen modal dialog. On iOS, those routes animate from the bottom to the
-/// top rather than horizontally.
-///
-/// The type `T` specifies the return type of the route which can be supplied as
-/// the route is popped from the stack via [Navigator.pop] by providing the
-/// optional `result` argument.
-///
-/// See also:
-///
-///
-///  * [SheetPageRoute], which is the [PageRoute] version of this class
 class SheetPage<T> extends Page<T> {
   /// Creates a material page.
   const SheetPage({
@@ -297,18 +271,18 @@ class SheetPage<T> extends Page<T> {
 
   @override
   Route<T> createRoute(BuildContext context) => _PageBasedSheetRoute<T>(
-        page: this,
-        physics: physics,
-        fit: fit,
-        stops: stops,
-        initialExtent: initialExtent,
-        barrierDismissible: barrierDismissible,
-        barrierColor: barrierColor,
-        draggable: draggable,
-        animationCurve: animationCurve,
-        duration: transitionDuration,
-        decorationBuilder: decorationBuilder,
-      );
+    page: this,
+    physics: physics,
+    fit: fit,
+    stops: stops,
+    initialExtent: initialExtent,
+    barrierDismissible: barrierDismissible,
+    barrierColor: barrierColor,
+    draggable: draggable,
+    animationCurve: animationCurve,
+    duration: transitionDuration,
+    decorationBuilder: decorationBuilder,
+  );
 }
 
 // A page-based version of SheetRoute.
@@ -339,7 +313,7 @@ class _PageBasedSheetRoute<T> extends SheetRoute<T> {
   bool get maintainState => _page.maintainState;
 
   @override
-  String get debugLabel => "${super.debugLabel}(${_page.name})";
+  String get debugLabel => '${super.debugLabel}(${_page.name})';
 }
 
 class _SheetRouteContainer extends StatefulWidget {
@@ -365,15 +339,15 @@ class __SheetRouteContainerState extends State<_SheetRouteContainer> with Ticker
     WidgetsBinding.instance.addPostFrameCallback((Duration timeStamp) {
       _sheetController
           .relativeAnimateTo(
-        route.initialExtent,
-        duration: route.transitionDuration,
-        curve: route.animationCurve ?? Curves.easeOut,
-      )
+            route.initialExtent,
+            duration: route.transitionDuration,
+            curve: route.animationCurve ?? Curves.easeOut,
+          )
           .then((_) {
-        if (_sheetController.hasClients) {
-          (_sheetController.position.context as SheetContext).initialAnimationFinished = true;
-        }
-      });
+            if (_sheetController.hasClients) {
+              (_sheetController.position.context as SheetContext).initialAnimationFinished = true;
+            }
+          });
     });
     super.initState();
   }
@@ -458,19 +432,13 @@ class __SheetRouteContainerState extends State<_SheetRouteContainer> with Ticker
       _sheetController.position.stopPreventingDrag();
       route.onPopInvoked(false);
     } else {
-      route.willPop().then(
-        (RoutePopDisposition disposition) {
-          if (disposition == RoutePopDisposition.pop) {
-            _sheetController.relativeAnimateTo(
-              0,
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeInOut,
-            );
-          } else {
-            _sheetController.position.stopPreventingDrag();
-          }
-        },
-      );
+      route.willPop().then((RoutePopDisposition disposition) {
+        if (disposition == RoutePopDisposition.pop) {
+          _sheetController.relativeAnimateTo(0, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+        } else {
+          _sheetController.position.stopPreventingDrag();
+        }
+      });
     }
   }
 

@@ -17,14 +17,15 @@ class MaterialSheetRoute<T> extends SheetRoute<T> {
     double initialStop = 1,
     super.duration,
   }) : super(
-          builder: (BuildContext context) => Material(
-            shape: shape,
-            color: backgroundColor,
-            elevation: elevation ?? 1,
-            clipBehavior: clipBehavior ?? Clip.none,
-            child: Builder(builder: builder),
-          ),
-          draggable: enableDrag,
-          initialExtent: initialStop,
-        );
+         builder:
+             (BuildContext context) => Material(
+               shape: shape,
+               color: backgroundColor,
+               elevation: elevation ?? 1,
+               clipBehavior: clipBehavior ?? Clip.none,
+               child: Builder(builder: builder),
+             ),
+         draggable: enableDrag,
+         initialExtent: initialStop,
+       );
 }
