@@ -2,9 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:sheet/route.dart';
 import 'package:sheet/sheet.dart';
-import 'package:sheet/src/route/sheet_route.dart';
 import 'package:sheet/src/widgets/resizable_sheet.dart';
 import 'package:sheet/src/widgets/status_bar_gesture_detector.dart';
 
@@ -242,31 +240,27 @@ class Sheet extends StatelessWidget {
       controller: effectiveController,
       scrollBehavior: SheetBehavior(),
       minInteractionExtent: minInteractionExtent,
-      viewportBuilder:
-          (BuildContext context, ViewportOffset offset) => _DefaultSheetScrollController(
-            child: StatusBarGestureDetector.scrollToTop(
-              child: SheetViewport(
-                clipBehavior: Clip.antiAlias,
+      viewportBuilder: (context, offset) => _DefaultSheetScrollController(
+        child: StatusBarGestureDetector.scrollToTop(
+          child: SheetViewport(
+            clipBehavior: Clip.antiAlias,
+            offset: offset,
+            minExtent: minExtent,
+            maxExtent: maxExtent,
+            fit: fit,
+            resizeable: resizable,
+            child: Padding(
+              padding: padding,
+              child: ResizableSheetChild(
+                resizable: resizable,
                 offset: offset,
-                minExtent: minExtent,
-                maxExtent: maxExtent,
-                fit: fit,
-                resizeable: resizable,
-                child: Padding(
-                  padding: padding,
-                  child: ResizableSheetChild(
-                    resizable: resizable,
-                    offset: offset,
-                    minExtent: minResizableExtent ?? 0,
-                    child: Builder(
-                      key: const Key('sheet_child'),
-                      builder: (context) => decorationBuild(context, child),
-                    ),
-                  ),
-                ),
+                minExtent: minResizableExtent ?? 0,
+                child: Builder(key: const Key('sheet_child'), builder: (context) => decorationBuild(context, child)),
               ),
             ),
           ),
+        ),
+      ),
     );
   }
 }
@@ -894,30 +888,6 @@ class RenderSheetViewport extends RenderBox
     Curve curve = Curves.ease,
   }) {
     return;
-    // TODO(jaime): check showOnScreen method behaves when keyboard appears on
-    // the screen
-    // if (!offset.allowImplicitScrolling) {
-    //   return super.showOnScreen(
-    //     descendant: descendant,
-    //     rect: rect,
-    //     duration: duration,
-    //     curve: curve,
-    //   );
-    // }
-    //
-    // final Rect? newRect = RenderViewportBase.showInViewport(
-    //   descendant: descendant,
-    //   viewport: this,
-    //   offset: offset,
-    //   rect: rect,
-    //   duration: duration,
-    //   curve: curve,
-    // );
-    // super.showOnScreen(
-    //   rect: newRect,
-    //   duration: duration,
-    //   curve: curve,
-    // );
   }
 
   @override

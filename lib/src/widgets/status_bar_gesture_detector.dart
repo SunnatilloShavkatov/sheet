@@ -1,4 +1,4 @@
-// ignore_for_file: discarded_futures
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 
@@ -12,7 +12,7 @@ class StatusBarGestureDetector extends StatefulWidget {
   static void _scrollToTopBarTap(BuildContext context) {
     final controller = PrimaryScrollController.maybeOf(context);
     if (controller != null && controller.hasClients) {
-      controller.animateTo(0, duration: const Duration(milliseconds: 1000), curve: Curves.easeOutCirc);
+      unawaited(controller.animateTo(0, duration: const Duration(milliseconds: 1000), curve: Curves.easeOutCirc));
     }
   }
 
@@ -38,19 +38,18 @@ class _StatusBarGestureDetectorState extends State<StatusBarGestureDetector> {
     final view = View.of(context);
     return OverlayPortal.targetsRootOverlay(
       controller: controller,
-      overlayChildBuilder:
-          (context) => Align(
-            alignment: Alignment.topCenter,
-            child: SizedBox(
-              height: view.padding.top / view.devicePixelRatio,
-              width: double.infinity,
-              child: GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: () => widget.onTap(context),
-                excludeFromSemantics: true,
-              ),
-            ),
+      overlayChildBuilder: (context) => Align(
+        alignment: Alignment.topCenter,
+        child: SizedBox(
+          height: view.padding.top / view.devicePixelRatio,
+          width: double.infinity,
+          child: GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () => widget.onTap(context),
+            excludeFromSemantics: true,
           ),
+        ),
+      ),
       child: widget.child,
     );
   }

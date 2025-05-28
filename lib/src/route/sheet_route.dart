@@ -1,10 +1,9 @@
-// ignore_for_file: deprecated_member_use, discarded_futures
+import 'dart:async';
 
 import 'package:flutter/cupertino.dart' show CupertinoSheetRoute;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:sheet/route.dart';
 import 'package:sheet/sheet.dart';
 
 const double _kWillPopThreshold = 0.8;
@@ -82,9 +81,9 @@ class SheetRoute<T> extends PageRoute<T> with DelegatedTransitionsRoute<T> {
   /// Curve for the transition animation
   final Curve? animationCurve;
 
-  /// Drag threshold to block any interaction if [Route.willPop] returns false
+  /// Drag threshold to block any interaction if [Route.popDisposition] returns false
   /// See also:
-  ///   * [WillPopScope], that allow to block an attempt to close a [ModalRoute]
+  ///   * [PopScope], that allow to block an attempt to close a [ModalRoute]
   final double willPopThreshold;
 
   /// {@macro flutter.widgets.TransitionRoute.transitionDuration}
@@ -167,9 +166,7 @@ class SheetRoute<T> extends PageRoute<T> with DelegatedTransitionsRoute<T> {
   /// Returns true if the controller should prevent popping for a given extent
   @protected
   bool shouldPreventPopForExtent(double extent) =>
-      extent < willPopThreshold &&
-      (hasScopedWillPopCallback || popDisposition == RoutePopDisposition.doNotPop) &&
-      controller!.velocity <= 0;
+      extent < willPopThreshold && (popDisposition == RoutePopDisposition.doNotPop) && controller!.velocity <= 0;
 
   Widget buildSheet(BuildContext context, Widget child) {
     SheetPhysics? effectivePhysics = SnapSheetPhysics(stops: stops ?? <double>[0, 1], parent: physics);
@@ -247,9 +244,9 @@ class SheetPage<T> extends Page<T> {
   /// Curve for the transition animation
   final Curve? animationCurve;
 
-  /// Drag threshold to block any interaction if [Route.willPop] returns false
+  /// Drag threshold to block any interaction if [Route.popDisposition] returns false
   /// See also:
-  ///   * [WillPopScope], that allow to block an attempt to close a [ModalRoute]
+  ///   * [PopScope], that allow to block an attempt to close a [ModalRoute]
   final double willPopThreshold;
 
   /// {@macro flutter.widgets.TransitionRoute.transitionDuration}
@@ -307,7 +304,8 @@ class _PageBasedSheetRoute<T> extends SheetRoute<T> {
   SheetPage<T> get _page => settings as SheetPage<T>;
 
   @override
-  WidgetBuilder get builder => (context) => _page.child;
+  WidgetBuilder get builder =>
+      (context) => _page.child;
 
   @override
   bool get maintainState => _page.maintainState;
@@ -336,8 +334,8 @@ class __SheetRouteContainerState extends State<_SheetRouteContainer> with Ticker
   void initState() {
     _routeController.addListener(onRouteAnimationUpdate);
     _sheetController.addListener(onSheetExtentUpdate);
-    WidgetsBinding.instance.addPostFrameCallback((Duration timeStamp) {
-      _sheetController
+    WidgetsBinding.instance.addPostFrameCallback((Duration timeStamp) async {
+      await _sheetController
           .relativeAnimateTo(
             route.initialExtent,
             duration: route.transitionDuration,
@@ -423,22 +421,25 @@ class __SheetRouteContainerState extends State<_SheetRouteContainer> with Ticker
   @protected
   void preventPop() {
     _sheetController.position.preventDrag();
-    _sheetController.position.animateTo(
-      _sheetController.position.maxScrollExtent,
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
+    unawaited(
+      _sheetController.position.animateTo(
+        _sheetController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      ),
     );
     if (route.popDisposition == RoutePopDisposition.doNotPop) {
       _sheetController.position.stopPreventingDrag();
-      route.onPopInvoked(false);
+      route.onPopInvokedWithResult(false, null);
     } else {
-      route.willPop().then((RoutePopDisposition disposition) {
-        if (disposition == RoutePopDisposition.pop) {
-          _sheetController.relativeAnimateTo(0, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
-        } else {
-          _sheetController.position.stopPreventingDrag();
-        }
-      });
+      final disposition = route.popDisposition;
+      if (disposition == RoutePopDisposition.pop) {
+        unawaited(
+          _sheetController.relativeAnimateTo(0, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut),
+        );
+      } else {
+        _sheetController.position.stopPreventingDrag();
+      }
     }
   }
 

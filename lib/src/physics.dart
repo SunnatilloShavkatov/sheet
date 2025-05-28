@@ -71,11 +71,9 @@ class BouncingSheetPhysics extends ScrollPhysics with SheetPhysics {
     final double overscrollPast = math.max(overscrollPastStart, overscrollPastEnd);
     final bool easing = (overscrollPastStart > 0.0 && offset < 0.0) || (overscrollPastEnd > 0.0 && offset > 0.0);
 
-    final double friction =
-        easing
-            // Apply less resistance when easing the overscroll vs tensioning.
-            ? frictionFactor((overscrollPast - offset.abs()) / position.viewportDimension)
-            : frictionFactor(overscrollPast / position.viewportDimension);
+    final double friction = easing
+        ? frictionFactor((overscrollPast - offset.abs()) / position.viewportDimension)
+        : frictionFactor(overscrollPast / position.viewportDimension);
     final double direction = offset.sign;
 
     return direction * _applyFriction(overscrollPast, offset.abs(), friction);
@@ -135,7 +133,6 @@ class BouncingSheetPhysics extends ScrollPhysics with SheetPhysics {
         return value - position.viewportDimension;
       }
     }
-    // underscroll
     if (value < position.pixels && position.pixels <= position.minScrollExtent) {
       return value - position.pixels;
     }
@@ -167,19 +164,6 @@ class BouncingSheetPhysics extends ScrollPhysics with SheetPhysics {
   @override
   double get minFlingVelocity => kMinFlingVelocity * 2.0;
 
-  // Methodology:
-  // 1- Use https://github.com/flutter/platform_tests/tree/master/scroll_overlay to test with
-  //    Flutter and platform scroll views superimposed.
-  // 3- If the scrollables stopped overlapping at any moment, adjust the desired
-  //    output value of this function at that input speed.
-  // 4- Feed new input/output set into a power curve fitter. Change function
-  //    and repeat from 2.
-  // 5- Repeat from 2 with medium and slow flings.
-  /// Momentum build-up function that mimics iOS's scroll speed increase with repeated flings.
-  ///
-  /// The velocity of the last fling is not an important factor. Existing speed
-  /// and (related) time since last fling are factors for the velocity transfer
-  /// calculations.
   @override
   double carriedMomentum(double existingVelocity) =>
       existingVelocity.sign * math.min(0.000816 * math.pow(existingVelocity.abs(), 1.967).toDouble(), 40000.0);
@@ -200,7 +184,6 @@ class NoMomentumSheetPhysics extends ScrollPhysics with SheetPhysics {
 
   @override
   double applyBoundaryConditions(ScrollMetrics position, double value) {
-    // underscroll
     if (value < position.pixels && position.pixels <= position.minScrollExtent) {
       return value - position.pixels;
     }
@@ -405,15 +388,14 @@ class SnapSheetPhysics extends ScrollPhysics with SheetPhysics {
     if (stops.isEmpty) {
       return 0;
     }
-    final int stop =
-        stops
-            .asMap()
-            .entries
-            .reduce(
-              (MapEntry<int, double> prev, MapEntry<int, double> curr) =>
-                  (curr.value - extent).abs() < (prev.value - extent).abs() ? curr : prev,
-            )
-            .key;
+    final int stop = stops
+        .asMap()
+        .entries
+        .reduce(
+          (MapEntry<int, double> prev, MapEntry<int, double> curr) =>
+              (curr.value - extent).abs() < (prev.value - extent).abs() ? curr : prev,
+        )
+        .key;
     return stop;
   }
 
@@ -439,9 +421,9 @@ class SnapSheetPhysics extends ScrollPhysics with SheetPhysics {
     return !position.hasPixels
         ? null
         : getPageFromPixels(
-          position.pixels.clamp(position.minScrollExtent, position.maxScrollExtent),
-          extentFor(position),
-        );
+            position.pixels.clamp(position.minScrollExtent, position.maxScrollExtent),
+            extentFor(position),
+          );
   }
 }
 

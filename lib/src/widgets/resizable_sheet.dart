@@ -1,5 +1,3 @@
-// ignore_for_file: always_put_control_body_on_new_line
-
 import 'dart:math';
 
 import 'package:flutter/rendering.dart';
@@ -54,11 +52,19 @@ class RenderResizableSheetChildBox extends RenderShiftedBox {
   ViewportOffset _offset;
 
   set offset(ViewportOffset value) {
-    if (value == _offset) return;
-    if (attached) _offset.removeListener(_hasScrolled);
+    if (value == _offset) {
+      return;
+    }
+    if (attached) {
+      _offset.removeListener(_hasScrolled);
+    }
     _offset = value;
-    if (attached) _offset.addListener(_hasScrolled);
-    if (!resizable) return;
+    if (attached) {
+      _offset.addListener(_hasScrolled);
+    }
+    if (!resizable) {
+      return;
+    }
     markNeedsLayout();
   }
 
@@ -66,7 +72,9 @@ class RenderResizableSheetChildBox extends RenderShiftedBox {
   bool _resizable;
 
   set resizable(bool value) {
-    if (value == _resizable) return;
+    if (value == _resizable) {
+      return;
+    }
     _resizable = value;
     markNeedsLayout();
   }
@@ -75,14 +83,20 @@ class RenderResizableSheetChildBox extends RenderShiftedBox {
   double _minExtent;
 
   set minExtent(double value) {
-    if (value == _minExtent) return;
+    if (value == _minExtent) {
+      return;
+    }
     _minExtent = value;
-    if (!resizable) return;
+    if (!resizable) {
+      return;
+    }
     markNeedsLayout();
   }
 
   void _hasScrolled() {
-    if (!resizable) return;
+    if (!resizable) {
+      return;
+    }
     markNeedsLayout();
     markNeedsSemanticsUpdate();
   }
