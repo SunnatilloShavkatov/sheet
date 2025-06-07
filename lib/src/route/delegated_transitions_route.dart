@@ -1,4 +1,4 @@
-// ignore_for_file: discarded_futures
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 
@@ -91,9 +91,11 @@ mixin DelegatedTransitionsRoute<T> on ModalRoute<T> {
       _nextRoutes ??= <DelegatedTransitionsRoute<dynamic>>[];
       _nextRoutes!.add(nextRoute);
 
-      nextRoute.completed.then((value) {
-        _nextRoutes!.remove(nextRoute);
-      });
+      unawaited(
+        nextRoute.completed.then((value) {
+          _nextRoutes!.remove(nextRoute);
+        }),
+      );
     }
     super.didChangeNext(nextRoute);
   }
@@ -117,7 +119,6 @@ mixin DelegatedTransitionsRoute<T> on ModalRoute<T> {
       Widget proxyChild = child;
       for (final DelegatedTransitionsRoute<dynamic> nextRoute in _nextRoutes!) {
         final ProxyAnimation secondaryAnimation = ProxyAnimation(nextRoute.animation);
-        // assert(!nextRoute._transitionCompleter.isCompleted,  'Cannot reuse a ${nextRoute.runtimeType} after disposing it.');
         proxyChild = nextRoute.buildSecondaryTransitionForPreviousRoute(context, secondaryAnimation, child);
       }
 

@@ -54,10 +54,8 @@ class SheetPrimaryScrollPosition extends ScrollPositionWithSingleContext {
   SheetPosition get sheetPosition => sheetContext.position;
 
   bool sheetShouldSheetAcceptUserOffset(double delta) {
-    // Can drag down if list already on the top
     final bool canDragForward = delta >= 0 && pixels <= minScrollExtent;
 
-    // Can drag up if sheet is not yet on top and list is already on top
     final bool canDragBackwards =
         delta < 0 && sheetPosition.pixels < sheetPosition.maxScrollExtent && pixels <= minScrollExtent;
 

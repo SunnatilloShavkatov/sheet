@@ -324,9 +324,6 @@ class SheetState extends State<SheetScrollable>
     final ScrollPosition? oldPosition = _position;
     if (oldPosition != null) {
       _effectiveScrollController.detach(oldPosition);
-      // It's important that we not dispose the old position until after the
-      // viewport has had a chance to unregister its listeners from the old
-      // position. So, schedule a microtask to do it.
       scheduleMicrotask(oldPosition.dispose);
     }
 
@@ -900,8 +897,6 @@ class ScrollIntent extends Intent {
   final ScrollIncrementType type;
 }
 
-// Not using a RestorableDouble because we want to allow null values and override
-// [enabled].
 class _RestorableScrollOffset extends RestorableValue<double?> {
   @override
   double? createDefaultValue() => null;

@@ -3,16 +3,6 @@ import 'package:sheet/sheet.dart';
 
 typedef SheetControllerCallback = void Function(SheetController controller);
 
-/// A widget that injects a [SheetController] that can be used by
-/// any [Sheet] children
-///
-/// It is useful for creating initial animations
-/// ```dart
-/// DefaultSheetController(
-///   onCreated: (controller) => controller.play
-/// )
-///
-///
 class DefaultSheetController extends StatefulWidget {
   const DefaultSheetController({super.key, required this.child, this.onCreated});
 

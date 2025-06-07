@@ -29,7 +29,6 @@ class ResizableSheetChild extends SingleChildRenderObjectWidget {
 
   @override
   void updateRenderObject(BuildContext context, RenderResizableSheetChildBox renderObject) {
-    // Order dependency: The offset setter reads the axis direction.
     renderObject
       ..offset = offset
       ..minExtent = minExtent
@@ -117,8 +116,6 @@ class RenderResizableSheetChildBox extends RenderShiftedBox {
   void performLayout() {
     final BoxParentData childParentData = child!.parentData! as BoxParentData;
 
-    // If not resizable we send constraints to child and
-    // parent size is the same as child
     if (!resizable) {
       child!.layout(constraints, parentUsesSize: true);
       size = child!.size;
@@ -126,8 +123,6 @@ class RenderResizableSheetChildBox extends RenderShiftedBox {
       return;
     }
 
-    // The height of the child will be the maximum between the offset pixels
-    // and the minExtent
     final double extend = max(_offset.pixels, minExtent);
     child!.layout(constraints.copyWith(maxHeight: extend, minHeight: extend), parentUsesSize: true);
 
